@@ -12,5 +12,4 @@ class TopFilmsDiffCallback: DiffUtil.ItemCallback<TopFilmsEntity>() {
         return oldItem == newItem
     }
 
-
 }
