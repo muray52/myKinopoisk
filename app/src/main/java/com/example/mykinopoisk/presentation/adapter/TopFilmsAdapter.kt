@@ -18,6 +18,8 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
 //    private var favoritesListOfFilmId: MutableList<Int>? =
 //        favoritesList?.map { it.filmId } as MutableList<Int>
 
+    var onFilmItemClickListener: ((TopFilmsEntity)->Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopFilmsViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
@@ -74,6 +76,10 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
 //            val filmId = listOfJSONObjects[position].getString("filmId").toInt()
 //            if (favoritesListOfFilmId?.contains(filmId) == true) {
 //                holder.itemView.setBackgroundColor(Color.GRAY)
+
+        holder.itemView.setOnClickListener{
+            onFilmItemClickListener?.invoke(topFilmsItem)
+        }
 
     }
 }

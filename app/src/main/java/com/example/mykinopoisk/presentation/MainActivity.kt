@@ -6,11 +6,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mykinopoisk.R
-import com.example.mykinopoisk.domain.TopFilmsViewModel
 import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
+import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoActivity
+import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,15 +26,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupRecyclerView()
-
-        swipeRefreshLayout = findViewById(R.id.idSwipeRefreshLayout)
         setupRefreshLayout()
+
 
         viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
 
         // scrolling refresh
         viewModel.listTopFilmsItems.observe(this){
             topFilmsAdapter.submitList(it)
+            Log.d("TEST_SCROLL", "observed")
         }
 
         // swiping refresh
@@ -60,15 +60,29 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        setupClickListener(rvFilmList)
 //        setupLongClickListener()
-//        setupClickListener()
+
 //        setupSwipeListener(rvShopList)
     }
 
     private fun setupRefreshLayout(){
+        swipeRefreshLayout = findViewById(R.id.idSwipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.loadFilms(true)
         }
+    }
+
+    private fun setupClickListener(rvFilmList: RecyclerView) {
+        topFilmsAdapter.onFilmItemClickListener = {
+            val intent = DetailedInfoActivity.newIntent(this, it.filmId?: 0)
+            startActivity(intent)
+        }
+    }
+
+    private fun isOnePaneMode(): Boolean {
+        return true
     }
 
 }
