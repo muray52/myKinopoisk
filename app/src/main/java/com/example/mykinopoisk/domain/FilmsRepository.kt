@@ -10,4 +10,8 @@ interface FilmsRepository {
 
     suspend fun getFilmDetailedDescription(filmId: Int): DetailedFilmEntity
 
+    suspend fun addToFavorites(film: TopFilmsEntity)
+
+    suspend fun removeFromFavorites(filmId: Int)
+
 }

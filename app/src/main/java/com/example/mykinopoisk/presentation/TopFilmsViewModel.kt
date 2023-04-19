@@ -1,18 +1,19 @@
 package com.example.mykinopoisk.presentation
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.mykinopoisk.data.repository.FilmsRepositoryImpl
+import com.example.mykinopoisk.domain.model.TopFilmsEntity
+import com.example.mykinopoisk.domain.usecases.AddOrRemoveFavoriteFilmsUseCase
 import com.example.mykinopoisk.domain.usecases.GetTopFilmsUseCase
 import kotlinx.coroutines.launch
 
-class TopFilmsViewModel : ViewModel() {
+class TopFilmsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = FilmsRepositoryImpl()
+    private val repository = FilmsRepositoryImpl(application)
     private val getTopFilmsUseCase = GetTopFilmsUseCase(repository)
+    private val addOrRemoveFavoriteFilmsUseCase = AddOrRemoveFavoriteFilmsUseCase(repository)
 
     private var page = 1
 
@@ -50,6 +51,12 @@ class TopFilmsViewModel : ViewModel() {
             isRefreshing.value = false
         }
         page++
+    }
+
+    fun changeFavoriteState(filmItem: TopFilmsEntity){
+        viewModelScope.launch {
+            addOrRemoveFavoriteFilmsUseCase.addFilmToFavorite(filmItem)
+        }
     }
 
 }

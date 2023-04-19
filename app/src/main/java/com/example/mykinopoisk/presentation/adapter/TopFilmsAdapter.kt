@@ -20,6 +20,8 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
 
     var onFilmItemClickListener: ((TopFilmsEntity)->Unit)? = null
 
+    var onFilmItemLongClickListener: ((TopFilmsEntity)->Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopFilmsViewHolder {
         val itemView =
             LayoutInflater.from(parent.context)
@@ -80,6 +82,9 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
         holder.itemView.setOnClickListener{
             onFilmItemClickListener?.invoke(topFilmsItem)
         }
-
+        holder.itemView.setOnLongClickListener {
+            onFilmItemLongClickListener?.invoke(topFilmsItem)
+            true
+        }
     }
 }

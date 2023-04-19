@@ -4,7 +4,7 @@ import com.example.mykinopoisk.data.api.model.CountriesApiModel
 import com.example.mykinopoisk.data.api.model.FilmDescriptionApiModel
 import com.example.mykinopoisk.data.api.model.GenresApiModel
 import com.example.mykinopoisk.data.api.model.TopFilmsPagesApiModel
-import com.example.mykinopoisk.domain.FilmsRepository
+import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
@@ -58,6 +58,15 @@ class FilmMapper {
                     false
                 )
                 )
+    }
+
+    fun mapFilmsEntityToFavoritesFilm(film:TopFilmsEntity): FavoritesFilmDbModel{
+        return FavoritesFilmDbModel(
+            film.filmId?: 0,
+            film.nameRu,
+            film.year,
+            film.posterUrlPreview
+        )
     }
 
     private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {

@@ -1,17 +1,11 @@
 package com.example.mykinopoisk.presentation
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mykinopoisk.R
-import com.example.mykinopoisk.databinding.ActivityDetailedInfoBinding
 import com.example.mykinopoisk.databinding.ActivityMainBinding
 import com.example.mykinopoisk.databinding.FragmentDetailedInfoBinding
 import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
@@ -35,30 +29,32 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-        setupRefreshLayout()
+        setupSwipeRefreshLayout()
 
         viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
 
         // scrolling refresh
-        viewModel.listTopFilmsItems.observe(this){
+        viewModel.listTopFilmsItems.observe(this) {
             topFilmsAdapter.submitList(it)
         }
-
         // swiping refresh
-        viewModel.isRefreshing.observe(this){
+        viewModel.isRefreshing.observe(this) {
             binding.idSwipeRefreshLayout.isRefreshing = it
         }
     }
 
 
-    private fun setupRecyclerView(){
-        with(binding.rvFilms){
+    private fun setupRecyclerView() {
+        with(binding.rvFilms) {
             itemAnimator = null
             topFilmsAdapter = TopFilmsAdapter()
             adapter = topFilmsAdapter
             layoutManager = layoutManagerRv
             setOnScrollChangeListener { _, _, _, _, _ ->
-                if(layoutManagerRv.findLastCompletelyVisibleItemPosition() == topFilmsAdapter.itemCount?.minus(1) ?: 0) {
+                if (layoutManagerRv.findLastCompletelyVisibleItemPosition() == topFilmsAdapter.itemCount?.minus(
+                        1
+                    ) ?: 0
+                ) {
                     val recyclerViewState = layoutManagerRv.onSaveInstanceState();
                     viewModel.loadFilms()
                     layoutManagerRv.onRestoreInstanceState(recyclerViewState)
@@ -66,27 +62,40 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setupClickListener(binding.rvFilms)
-//        setupLongClickListener()
-
-//        setupSwipeListener(rvShopList)
+        setupOnClickListener()
+        setupOnLongClickListener()
     }
 
-    private fun setupRefreshLayout(){
+    private fun setupSwipeRefreshLayout() {
         binding.idSwipeRefreshLayout.setOnRefreshListener {
             viewModel.loadFilms(true)
         }
     }
 
-    private fun setupClickListener(rvFilmList: RecyclerView) {
+    private fun setupOnClickListener() {
         topFilmsAdapter.onFilmItemClickListener = {
-            val intent = DetailedInfoActivity.newIntent(this, it.filmId?: 0)
-            startActivity(intent)
+
+            if (isOnePaneMode()) {
+                val intent = DetailedInfoActivity.newIntent(this, it.filmId ?: 0)
+                startActivity(intent)
+            } else {
+                val fragment = DetailedInfoFragment.newInstance(it.filmId ?: 0)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.detailed_film_container, fragment)
+                    .commit()
+            }
+        }
+    }
+
+    private fun setupOnLongClickListener(){
+        topFilmsAdapter.onFilmItemLongClickListener = {
+            Log.d("TEST_DB", "onclick&")
+            viewModel.changeFavoriteState(it)
         }
     }
 
     private fun isOnePaneMode(): Boolean {
-        return true
+        return binding.detailedFilmContainer == null
     }
 
 }

@@ -1,17 +1,15 @@
 package com.example.mykinopoisk.presentation.detailedinfo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.mykinopoisk.data.repository.FilmsRepositoryImpl
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
 import com.example.mykinopoisk.domain.usecases.GetDetailedFilmInfoUseCase
 import kotlinx.coroutines.launch
 
-class DetailedInfoViewModel : ViewModel() {
+class DetailedInfoViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = FilmsRepositoryImpl()
+    private val repository = FilmsRepositoryImpl(application)
     private val getDetailedFilmInfoUseCase = GetDetailedFilmInfoUseCase(repository)
 
     private val _detailedInfo = MutableLiveData<DetailedFilmEntity>()
