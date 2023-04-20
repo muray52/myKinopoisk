@@ -19,9 +19,6 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
 
     val isRefreshing = MutableLiveData<Boolean>()
 
-//    private val _listTopFilmsItems = MutableLiveData<MutableList<TopFilmsEntity>>()
-//    val listTopFilmsItems: LiveData<MutableList<TopFilmsEntity>>
-//            get() = _listTopFilmsItems
     val listTopFilmsItems = liveData {
         isRefreshing.value = true
         val data = getTopFilmsUseCase.loadFilmsList(page)
@@ -31,9 +28,12 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
         isRefreshing.value = false
     }
 
+    val listOfFavorites = getTopFilmsUseCase.loadFilmFavorites()
+
 //    init {
-//        TODO("update init vals like in courses")
-//        loadFilms(true)
+//        viewModelScope.launch {
+//            _listTopFilmsItems = getTopFilmsUseCase.loadFilmsList(page)
+//        }
 //    }
 
     fun loadFilms(refresh: Boolean = false) {
@@ -53,10 +53,16 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
         page++
     }
 
-    fun changeFavoriteState(filmItem: TopFilmsEntity){
+    fun changeFavoriteState(filmItem: TopFilmsEntity) {
         viewModelScope.launch {
-            addOrRemoveFavoriteFilmsUseCase.addFilmToFavorite(filmItem)
+            if (filmItem.favoritesFlag) {
+                addOrRemoveFavoriteFilmsUseCase.removeFilmFromFavorite(filmItem.filmId)
+            } else {
+                addOrRemoveFavoriteFilmsUseCase.addFilmToFavorite(filmItem)
+            }
         }
+
+        println("listOfFavorites = ${listOfFavorites.value?.size}")
     }
 
 }

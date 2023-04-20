@@ -60,13 +60,36 @@ class FilmMapper {
                 )
     }
 
-    fun mapFilmsEntityToFavoritesFilm(film:TopFilmsEntity): FavoritesFilmDbModel{
+    fun mapFilmsEntityToFavoritesFilm(film: TopFilmsEntity): FavoritesFilmDbModel {
         return FavoritesFilmDbModel(
-            film.filmId?: 0,
+            film.filmId,
             film.nameRu,
             film.year,
             film.posterUrlPreview
         )
+    }
+
+    fun mapFavoritesFilmToFilmsEntity(
+        film: MutableList<FavoritesFilmDbModel>
+    ): MutableList<TopFilmsEntity> {
+
+        val listOfFavorites: MutableList<TopFilmsEntity> = mutableListOf()
+        film.forEach {
+            listOfFavorites.add(
+                TopFilmsEntity(
+                    it.filmId,
+                    it.nameRu,
+                    it.year,
+                    arrayListOf(),
+                    arrayListOf(),
+                    null,
+                    null,
+                    it.posterUrlPreview,
+                    true
+                )
+            )
+        }
+        return listOfFavorites
     }
 
     private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {

@@ -14,4 +14,6 @@ interface FilmsRepository {
 
     suspend fun removeFromFavorites(filmId: Int)
 
+    fun getFavorites(): LiveData<MutableList<TopFilmsEntity>>
+
 }

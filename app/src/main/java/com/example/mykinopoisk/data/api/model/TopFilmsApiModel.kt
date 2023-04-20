@@ -3,7 +3,7 @@ package com.example.mykinopoisk.data.api.model
 import com.google.gson.annotations.SerializedName
 
 data class TopFilmsApiModel (
-    @SerializedName("filmId"           ) var filmId           : Int?                 = null,
+    @SerializedName("filmId"           ) var filmId           : Int                 = 0,
     @SerializedName("nameRu"           ) var nameRu           : String?              = null,
     @SerializedName("nameEn"           ) var nameEn           : String?              = null,
     @SerializedName("year"             ) var year             : String?              = null,

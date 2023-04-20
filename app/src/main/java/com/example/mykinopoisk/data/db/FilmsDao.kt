@@ -10,7 +10,7 @@ import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 interface FilmsDao {
 
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME}")
-    fun getAll(): List<FavoritesFilmDbModel>
+    fun getAll(): MutableList<FavoritesFilmDbModel>
 
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME} WHERE filmId IN (:filmIds)")
     fun getByIds(filmIds: IntArray): List<FavoritesFilmDbModel>

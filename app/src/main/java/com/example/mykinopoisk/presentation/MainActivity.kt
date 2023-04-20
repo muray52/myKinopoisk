@@ -76,10 +76,10 @@ class MainActivity : AppCompatActivity() {
         topFilmsAdapter.onFilmItemClickListener = {
 
             if (isOnePaneMode()) {
-                val intent = DetailedInfoActivity.newIntent(this, it.filmId ?: 0)
+                val intent = DetailedInfoActivity.newIntent(this, it.filmId)
                 startActivity(intent)
             } else {
-                val fragment = DetailedInfoFragment.newInstance(it.filmId ?: 0)
+                val fragment = DetailedInfoFragment.newInstance(it.filmId)
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.detailed_film_container, fragment)
                     .commit()

@@ -7,6 +7,7 @@ class AddOrRemoveFavoriteFilmsUseCase(private val repository: FilmsRepository) {
 
     suspend fun addFilmToFavorite(film: TopFilmsEntity){
         repository.addToFavorites(film)
+        film.favoritesFlag = true
     }
 
     suspend fun removeFilmFromFavorite(filmId: Int){
