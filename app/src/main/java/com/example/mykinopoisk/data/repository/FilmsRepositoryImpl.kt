@@ -3,15 +3,13 @@ package com.example.mykinopoisk.data.repository
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.Transformations
 import com.example.mykinopoisk.data.api.ApiFactory
-import com.example.mykinopoisk.data.api.model.TopFilmsPagesApiModel
 import com.example.mykinopoisk.data.db.AppDatabase
 import com.example.mykinopoisk.data.mapper.FilmMapper
 import com.example.mykinopoisk.domain.FilmsRepository
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
-import androidx.lifecycle.Transformations
 
 class FilmsRepositoryImpl(application: Application) : FilmsRepository {
 
@@ -37,9 +35,8 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
         filmsDao.deleteById(filmId)
     }
 
-    override fun getFavorites(): LiveData<MutableList<TopFilmsEntity>> {
-        return liveData {
-            emit(mapper.mapFavoritesFilmToFilmsEntity(filmsDao.getAll()))
+    override fun getFavorites(): LiveData<MutableList<TopFilmsEntity>> =
+        Transformations.map(filmsDao.getAll()) {
+            mapper.mapFavoritesFilmToFilmsEntity(it)
         }
-    }
 }

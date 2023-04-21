@@ -3,7 +3,8 @@ package com.example.mykinopoisk.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.example.mykinopoisk.R
+import com.example.mykinopoisk.databinding.TopFilmsItemBinding
+import com.example.mykinopoisk.databinding.TopFilmsItemFavoritesBinding
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 import com.squareup.picasso.Picasso
 
@@ -14,22 +15,41 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
     var onFilmItemLongClickListener: ((TopFilmsEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopFilmsViewHolder {
-        val layout = when (viewType) {
-            VIEW_TYPE_FAVORITE_FALSE,0 -> R.layout.top_films_item
-            VIEW_TYPE_FAVORITE_TRUE -> R.layout.top_films_item_favorites
+        val binding = when (viewType) {
+            VIEW_TYPE_FAVORITE_FALSE -> TopFilmsItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            VIEW_TYPE_FAVORITE_TRUE -> TopFilmsItemFavoritesBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             else -> throw RuntimeException("Error in ViewType $viewType")
         }
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(layout, parent, false)
-        return TopFilmsViewHolder(itemView)
+
+        return TopFilmsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TopFilmsViewHolder, position: Int) {
+        val binding = holder.binding
         val topFilmsItem = getItem(position)
-        holder.nameRu.text = topFilmsItem.nameRu
-        holder.genreAndYear.text = topFilmsItem.genreAndYear
-        Picasso.get().load(topFilmsItem.posterUrlPreview)
-            .into(holder.posterUrlPreview)
+
+        when (binding) {
+            is TopFilmsItemBinding -> {
+                binding.tvNameRu.text = topFilmsItem.nameRu
+                binding.tvGenreAndYear.text = topFilmsItem.genreAndYear
+                Picasso.get().load(topFilmsItem.posterUrlPreview)
+                    .into(binding.ivIconMovie)
+            }
+            is TopFilmsItemFavoritesBinding -> {
+                binding.tvNameRu.text = topFilmsItem.nameRu
+                binding.tvGenreAndYear.text = topFilmsItem.genreAndYear
+                Picasso.get().load(topFilmsItem.posterUrlPreview)
+                    .into(binding.ivIconMovie)
+            }
+        }
 
         holder.itemView.setOnClickListener {
             onFilmItemClickListener?.invoke(topFilmsItem)
@@ -39,6 +59,10 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
             true
         }
     }
+
+    override fun getItemViewType(position: Int): Int =
+        if(getItem(position).favoritesFlag) VIEW_TYPE_FAVORITE_TRUE
+        else VIEW_TYPE_FAVORITE_FALSE
 
     companion object {
         const val VIEW_TYPE_FAVORITE_FALSE = 1

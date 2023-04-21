@@ -1,13 +1,12 @@
 package com.example.mykinopoisk.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mykinopoisk.R
 import com.example.mykinopoisk.databinding.ActivityMainBinding
-import com.example.mykinopoisk.databinding.FragmentDetailedInfoBinding
 import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoActivity
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoFragment
@@ -29,29 +28,37 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-        setupSwipeRefreshLayout()
+//        setupSwipeRefreshLayout()
 
         viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
 
+        setupObservers()
+    }
+
+    private fun setupObservers(){
         // scrolling refresh
         viewModel.listTopFilmsItems.observe(this) {
             topFilmsAdapter.submitList(it)
+            println("ObserveTopFilmsAdapter = ${it.toString()}")
         }
         // swiping refresh
-        viewModel.isRefreshing.observe(this) {
-            binding.idSwipeRefreshLayout.isRefreshing = it
+//        viewModel.isRefreshing.isRefreshingobserve(this) {
+//            binding.idSwipeRefreshLayout.isRefreshing = it
+//        }
+
+        viewModel.listOfFavorites.observe(this){
+            println("${it.toString()}")
         }
     }
 
-
     private fun setupRecyclerView() {
+        topFilmsAdapter = TopFilmsAdapter()
         with(binding.rvFilms) {
             itemAnimator = null
-            topFilmsAdapter = TopFilmsAdapter()
             adapter = topFilmsAdapter
             layoutManager = layoutManagerRv
             setOnScrollChangeListener { _, _, _, _, _ ->
-                if (layoutManagerRv.findLastCompletelyVisibleItemPosition() == topFilmsAdapter.itemCount?.minus(
+                if (layoutManagerRv.findLastCompletelyVisibleItemPosition() >= topFilmsAdapter.itemCount?.minus(
                         1
                     ) ?: 0
                 ) {
@@ -66,11 +73,11 @@ class MainActivity : AppCompatActivity() {
         setupOnLongClickListener()
     }
 
-    private fun setupSwipeRefreshLayout() {
-        binding.idSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadFilms(true)
-        }
-    }
+//    private fun setupSwipeRefreshLayout() {
+//        binding.idSwipeRefreshLayout.setOnRefreshListener {
+//            viewModel.loadFilms(true)
+//        }
+//    }
 
     private fun setupOnClickListener() {
         topFilmsAdapter.onFilmItemClickListener = {
@@ -89,8 +96,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupOnLongClickListener(){
         topFilmsAdapter.onFilmItemLongClickListener = {
-            Log.d("TEST_DB", "onclick&")
             viewModel.changeFavoriteState(it)
+            println("DataTopFilmsAdapter = ${viewModel.listTopFilmsItems.value.toString()}")
         }
     }
 

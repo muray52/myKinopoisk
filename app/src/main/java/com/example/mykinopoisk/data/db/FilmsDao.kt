@@ -1,5 +1,6 @@
 package com.example.mykinopoisk.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,7 +11,7 @@ import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 interface FilmsDao {
 
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME}")
-    fun getAll(): MutableList<FavoritesFilmDbModel>
+    fun getAll(): LiveData<MutableList<FavoritesFilmDbModel>>
 
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME} WHERE filmId IN (:filmIds)")
     fun getByIds(filmIds: IntArray): List<FavoritesFilmDbModel>
