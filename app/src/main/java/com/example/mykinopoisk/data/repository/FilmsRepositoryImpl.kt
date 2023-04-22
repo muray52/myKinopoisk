@@ -27,16 +27,37 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
 
     override suspend fun addToFavorites(film: TopFilmsEntity) {
         Log.d("TEST_DB", "add_filmId = ${film.filmId}")
-        filmsDao.insert(mapper.mapFilmsEntityToFavoritesFilm(film))
+        filmsDao.insertFavorites(mapper.mapFilmsEntityToFavoritesFilm(film))
     }
 
     override suspend fun removeFromFavorites(filmId: Int) {
         Log.d("TEST_DB", "delete_filmId = ${filmId}")
-        filmsDao.deleteById(filmId)
+        filmsDao.deleteFavoritesById(filmId)
     }
 
     override fun getFavorites(): LiveData<MutableList<TopFilmsEntity>> =
-        Transformations.map(filmsDao.getAll()) {
+        Transformations.map(filmsDao.getFavoritesAll()) {
             mapper.mapFavoritesFilmToFilmsEntity(it)
         }
+
+    override fun getTopFilms(): LiveData<MutableList<TopFilmsEntity>> =
+        Transformations.map(filmsDao.getTopFilmsAll()) {
+            mapper.mapTopFilmsDbToFilmsEntity(it)
+        }
+
+    override suspend fun insertTopFilms(topFilms: MutableList<TopFilmsEntity>) {
+        filmsDao.insertTopFilms(mapper.mapListOfFilmsEntityToListOfTopFilmsDb(topFilms))
+    }
+
+    override suspend fun deleteTopFilms() {
+        filmsDao.deleteTopFilmsAll()
+    }
+
+    override suspend fun deleteTopFilmsById(filmId: Int) {
+        filmsDao.deleteTopFilmsById(filmId)
+    }
+
+    override suspend fun updateTopFilms(topFilm: TopFilmsEntity) {
+        filmsDao.updateTopFilms(mapper.mapFilmsEntityToTopFilmsDb(topFilm))
+    }
 }

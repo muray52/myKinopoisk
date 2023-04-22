@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         // scrolling refresh
         viewModel.listTopFilmsItems.observe(this) {
             topFilmsAdapter.submitList(it)
-            println("ObserveTopFilmsAdapter = ${it.toString()}")
         }
         // swiping refresh
 //        viewModel.isRefreshing.isRefreshingobserve(this) {
@@ -47,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         viewModel.listOfFavorites.observe(this){
-            println("${it.toString()}")
         }
     }
 

@@ -5,6 +5,7 @@ import com.example.mykinopoisk.data.api.model.FilmDescriptionApiModel
 import com.example.mykinopoisk.data.api.model.GenresApiModel
 import com.example.mykinopoisk.data.api.model.TopFilmsPagesApiModel
 import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
+import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
@@ -22,6 +23,7 @@ class FilmMapper {
             val genreAndYear = mainGenre + "(" + it.year + ")"
             topFilmsEntity.add(
                 TopFilmsEntity(
+                    0,
                     it.filmId,
                     it.nameRu,
                     it.year,
@@ -77,6 +79,7 @@ class FilmMapper {
         film.forEach {
             listOfFavorites.add(
                 TopFilmsEntity(
+                    0,
                     it.filmId,
                     it.nameRu,
                     it.year,
@@ -92,26 +95,76 @@ class FilmMapper {
         return listOfFavorites
     }
 
-    private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {
-        var genresString = "Жанры:"
-        if (genresArray.size > 1) {
-            for (i in 0 until genresArray.size - 1) {
-                genresString += " " + genresArray[i].genre + ","
-            }
+    fun mapTopFilmsDbToFilmsEntity(
+        film: MutableList<TopFilmsDbModel>
+    ): MutableList<TopFilmsEntity> {
+
+        val listOfFavorites: MutableList<TopFilmsEntity> = mutableListOf()
+        film.forEach {
+            listOfFavorites.add(
+                TopFilmsEntity(
+                    it.id,
+                    it.filmId,
+                    it.nameRu,
+                    it.year,
+                    arrayListOf(),
+                    arrayListOf(),
+                    null,
+                    null,
+                    it.posterUrlPreview,
+                    it.favoritesFlag
+                )
+            )
         }
-        genresString += " " + genresArray.last().genre
-        return genresString
+        return listOfFavorites
     }
 
-    private fun createCountriesString(countriesArray: ArrayList<CountriesApiModel>): String {
-        var countriesString = "Страны:"
-        if (countriesArray.size > 1) {
-            for (i in 0 until countriesArray.size - 1) {
-                countriesString += " " + countriesArray[i].country + ","
-            }
+    fun mapListOfFilmsEntityToListOfTopFilmsDb(topFlims: MutableList<TopFilmsEntity>): List<TopFilmsDbModel> {
+        val listOfTopFilms: MutableList<TopFilmsDbModel> = mutableListOf()
+        topFlims.forEach {
+            listOfTopFilms.add(
+                TopFilmsDbModel(
+                    it.id,
+                    it.filmId,
+                    it.nameRu,
+                    it.year,
+                    it.posterUrlPreview,
+                    it.favoritesFlag
+                )
+            )
         }
-        countriesString += " " + countriesArray.last().country
-        return countriesString
+        return listOfTopFilms
     }
+
+    fun mapFilmsEntityToTopFilmsDb(topFlims: TopFilmsEntity) = TopFilmsDbModel(
+        topFlims.id,
+        topFlims.filmId,
+        topFlims.nameRu,
+        topFlims.year,
+        topFlims.posterUrlPreview,
+        topFlims.favoritesFlag
+    )
+
+private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {
+    var genresString = "Жанры:"
+    if (genresArray.size > 1) {
+        for (i in 0 until genresArray.size - 1) {
+            genresString += " " + genresArray[i].genre + ","
+        }
+    }
+    genresString += " " + genresArray.last().genre
+    return genresString
+}
+
+private fun createCountriesString(countriesArray: ArrayList<CountriesApiModel>): String {
+    var countriesString = "Страны:"
+    if (countriesArray.size > 1) {
+        for (i in 0 until countriesArray.size - 1) {
+            countriesString += " " + countriesArray[i].country + ","
+        }
+    }
+    countriesString += " " + countriesArray.last().country
+    return countriesString
+}
 
 }

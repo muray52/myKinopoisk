@@ -5,6 +5,7 @@ import com.example.mykinopoisk.data.api.model.GenresApiModel
 
 
 data class TopFilmsEntity (
+    val id: Int,
     val filmId: Int,
     val nameRu: String?,
     val year: String?,
