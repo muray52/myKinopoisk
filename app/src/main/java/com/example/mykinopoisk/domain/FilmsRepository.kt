@@ -22,7 +22,7 @@ interface FilmsRepository {
 
     suspend fun deleteTopFilms()
 
-    suspend fun deleteTopFilmsById(id: Int)
+    suspend fun deleteTopFilmsById(filmId: Int)
 
     suspend fun updateTopFilms(topFilm: TopFilmsEntity)
 

@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.room.Transaction
 import com.example.mykinopoisk.data.api.ApiFactory
 import com.example.mykinopoisk.data.db.AppDatabase
 import com.example.mykinopoisk.data.mapper.FilmMapper
@@ -31,7 +32,7 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
     }
 
     override suspend fun removeFromFavorites(filmId: Int) {
-        Log.d("TEST_DB", "delete_filmId = ${filmId}")
+        Log.d("TEST_DB", "delete_filmId = $filmId")
         filmsDao.deleteFavoritesById(filmId)
     }
 

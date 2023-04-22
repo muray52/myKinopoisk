@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
+import androidx.room.DeleteTable as DeleteTable1
 
 @Dao
 interface FilmsDao {

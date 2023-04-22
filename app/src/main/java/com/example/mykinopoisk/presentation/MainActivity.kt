@@ -1,7 +1,6 @@
 package com.example.mykinopoisk.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val layoutManagerRv = LinearLayoutManager(this)
 
     private var _binding: ActivityMainBinding? = null
-    val binding: ActivityMainBinding
+    private val binding: ActivityMainBinding
         get() = _binding ?: throw RuntimeException("ActivityMainBinding is null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,24 +27,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-//        setupSwipeRefreshLayout()
+        setupSwipeRefreshLayout()
 
         viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
 
         setupObservers()
     }
 
-    private fun setupObservers(){
-        // scrolling refresh
+    private fun setupObservers() {
+        // scrolling refresh- load new pages
         viewModel.listTopFilmsItems.observe(this) {
             topFilmsAdapter.submitList(it)
         }
         // swiping refresh
-//        viewModel.isRefreshing.isRefreshingobserve(this) {
-//            binding.idSwipeRefreshLayout.isRefreshing = it
-//        }
+        viewModel.isRefreshing.observe(this) {
+            binding.idSwipeRefreshLayout.isRefreshing = it
+        }
 
-        viewModel.listOfFavorites.observe(this){
+        viewModel.listOfFavorites.observe(this) {
         }
     }
 
@@ -55,31 +54,32 @@ class MainActivity : AppCompatActivity() {
             itemAnimator = null
             adapter = topFilmsAdapter
             layoutManager = layoutManagerRv
-            setOnScrollChangeListener { _, _, _, _, _ ->
-                if (layoutManagerRv.findLastCompletelyVisibleItemPosition() >= topFilmsAdapter.itemCount?.minus(
-                        1
-                    ) ?: 0
-                ) {
-                    val recyclerViewState = layoutManagerRv.onSaveInstanceState();
-                    viewModel.loadFilms()
-                    layoutManagerRv.onRestoreInstanceState(recyclerViewState)
-                }
-            }
         }
 
+        setupOnScrollListener()
         setupOnClickListener()
         setupOnLongClickListener()
     }
 
-//    private fun setupSwipeRefreshLayout() {
-//        binding.idSwipeRefreshLayout.setOnRefreshListener {
-//            viewModel.loadFilms(true)
-//        }
-//    }
+    private fun setupSwipeRefreshLayout() {
+        binding.idSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshFilms()
+        }
+    }
+
+    private fun setupOnScrollListener(){
+        binding.rvFilms.setOnScrollChangeListener { _, _, _, _, _ ->
+            if ((layoutManagerRv.findLastCompletelyVisibleItemPosition() >
+                (topFilmsAdapter.itemCount?.minus(2) ?: 0)
+                        && topFilmsAdapter.itemCount > 0 )
+            ) {
+                viewModel.loadFilms()
+            }
+        }
+    }
 
     private fun setupOnClickListener() {
         topFilmsAdapter.onFilmItemClickListener = {
-
             if (isOnePaneMode()) {
                 val intent = DetailedInfoActivity.newIntent(this, it.filmId)
                 startActivity(intent)
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupOnLongClickListener(){
+    private fun setupOnLongClickListener() {
         topFilmsAdapter.onFilmItemLongClickListener = {
             viewModel.changeFavoriteState(it)
             println("DataTopFilmsAdapter = ${viewModel.listTopFilmsItems.value.toString()}")

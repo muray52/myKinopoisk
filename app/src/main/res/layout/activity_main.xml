@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:id="@+id/idSwipeRefreshLayout"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginVertical="?attr/actionBarSize">-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/idSwipeRefreshLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="?attr/actionBarSize">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_films"
@@ -17,7 +17,28 @@
             android:layout_height="match_parent"
             android:layout_marginVertical="?attr/actionBarSize" />
 
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/button_popular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Popular" />
+
+        <Button
+            android:id="@+id/button_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Favorites" />
+    </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

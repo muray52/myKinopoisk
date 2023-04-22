@@ -18,48 +18,34 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
     private var page = 1
 
     val isRefreshing = MutableLiveData<Boolean>()
-
     val listTopFilmsItems = getTopFilmsUseCase.getTopFilms()
-//    val listTopFilmsItems = liveData {
-//        isRefreshing.value = true
-//        val data = getTopFilmsUseCase.loadFilmsList(page)
-//        changeFavoriteFlagStatus(data)
-//        emit(data)
-//        Log.d("TEST_SCROLL", "page = $page")
-//        page++
-//        isRefreshing.value = false
-//    }
-
     val listOfFavorites = getTopFilmsUseCase.loadFilmFavorites()
 
     init {
-        loadFilms(true)
+        refreshFilms()
     }
 
-//    init {
-//        viewModelScope.launch {
-//            isRefreshing.value = true
-//            listTopFilmsItems.value?.addAll(getTopFilmsUseCase.loadFilmsList(1))
-//            page++
-//            isRefreshing.value = false
-//        }
-//    }
-
-    fun loadFilms(refresh: Boolean = false) {
-        if (refresh) {
-            page = 1
-        }
+    fun loadFilms() {
         viewModelScope.launch {
-            if (page == 1) {
-                isRefreshing.value = true
-                getTopFilmsUseCase.deleteTopFilms()
-            }
             val data = getTopFilmsUseCase.loadFilmsList(page)
             changeFavoriteFlagStatus(data)
             getTopFilmsUseCase.insertTopFilms(data)
-            Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
             isRefreshing.value = false
             page++
+        }
+        Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
+    }
+
+    fun refreshFilms(){
+        page = 1
+        isRefreshing.value = true
+        deleteFilmsList()
+        loadFilms()
+    }
+
+    fun deleteFilmsList() {
+        viewModelScope.launch {
+            getTopFilmsUseCase.deleteTopFilms()
         }
     }
 
