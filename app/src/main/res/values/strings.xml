@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">myKinopoisk</string>
+    <string name="pupular_appbar">Popular</string>
+    <string name="favorite_appbar">Favorites</string>
+    <string name="pupular_button">POPULAR</string>
+    <string name="favorite_button">FAVORITES</string>
 </resources>

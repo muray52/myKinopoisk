@@ -69,4 +69,7 @@ dependencies {
 
     //Picasso for images
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    //fragments artifacts
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
 }

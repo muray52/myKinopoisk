@@ -43,7 +43,7 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
         loadFilms()
     }
 
-    fun deleteFilmsList() {
+    private fun deleteFilmsList() {
         viewModelScope.launch {
             getTopFilmsUseCase.deleteTopFilms()
         }

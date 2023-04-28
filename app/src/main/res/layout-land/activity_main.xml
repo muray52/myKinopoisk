@@ -6,49 +6,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.MainActivity">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/idSwipeRefreshLayout"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/film_list_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginVertical="?attr/actionBarSize"
+        tools:layout="@layout/fragment_popular"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_films"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintBottom_toTopOf="parent"
+        >
+    </androidx.fragment.app.FragmentContainerView>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat.DayNight"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintBottom_toTopOf="@id/film_list_container"
+        app:layout_constraintEnd_toEndOf="@+id/film_list_container"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/idTabName"
+            android:id="@+id/tvTabName"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:text="Popular"
+            android:text="@string/pupular_appbar"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
             android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="@id/film_list_container"
+        app:layout_constraintEnd_toEndOf="@+id/film_list_container"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <Button
+            android:id="@+id/button_popular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pupular_button" />
+
+        <Button
+            android:id="@+id/button_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/favorite_button" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
@@ -60,7 +77,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/detailed_film_container"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline_middle"

@@ -17,7 +17,7 @@ class DetailedInfoFragment : Fragment() {
     private lateinit var viewModel: DetailedInfoViewModel
 
     private var _binding: FragmentDetailedInfoBinding? = null
-    val binding: FragmentDetailedInfoBinding
+    private val binding: FragmentDetailedInfoBinding
         get() = _binding ?: throw RuntimeException("FragmentDetailedInfoBinding is null")
 
 

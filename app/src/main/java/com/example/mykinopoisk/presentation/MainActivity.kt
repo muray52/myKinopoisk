@@ -9,13 +9,13 @@ import com.example.mykinopoisk.databinding.ActivityMainBinding
 import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoActivity
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoFragment
+import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
+import com.example.mykinopoisk.presentation.favorite_films.FavoriteFilmsFragment
+import com.example.mykinopoisk.presentation.top_films.TopFilmsFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DetailedInfoOpen {
 
     private lateinit var viewModel: TopFilmsViewModel
-
-    private lateinit var topFilmsAdapter: TopFilmsAdapter
-    private val layoutManagerRv = LinearLayoutManager(this)
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding
@@ -26,76 +26,31 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
-        setupSwipeRefreshLayout()
-
         viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
-
-        setupObservers()
+        startPopularFragment()
+        onClickButtonListener()
     }
 
-    private fun setupObservers() {
-        // scrolling refresh- load new pages
-        viewModel.listTopFilmsItems.observe(this) {
-            topFilmsAdapter.submitList(it)
-        }
-        // swiping refresh
-        viewModel.isRefreshing.observe(this) {
-            binding.idSwipeRefreshLayout.isRefreshing = it
-        }
-
-        viewModel.listOfFavorites.observe(this) {
-        }
+    private fun startPopularFragment() {
+        val fragment = TopFilmsFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.film_list_container, fragment)
+            .commit()
     }
 
-    private fun setupRecyclerView() {
-        topFilmsAdapter = TopFilmsAdapter()
-        with(binding.rvFilms) {
-            itemAnimator = null
-            adapter = topFilmsAdapter
-            layoutManager = layoutManagerRv
-        }
-
-        setupOnScrollListener()
-        setupOnClickListener()
-        setupOnLongClickListener()
+    private fun startFavoritesFragment() {
+        val fragment = FavoriteFilmsFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.film_list_container, fragment)
+            .commit()
     }
 
-    private fun setupSwipeRefreshLayout() {
-        binding.idSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshFilms()
+    private fun onClickButtonListener() {
+        binding.buttonPopular?.setOnClickListener {
+            startPopularFragment()
         }
-    }
-
-    private fun setupOnScrollListener(){
-        binding.rvFilms.setOnScrollChangeListener { _, _, _, _, _ ->
-            if ((layoutManagerRv.findLastCompletelyVisibleItemPosition() >
-                (topFilmsAdapter.itemCount?.minus(2) ?: 0)
-                        && topFilmsAdapter.itemCount > 0 )
-            ) {
-                viewModel.loadFilms()
-            }
-        }
-    }
-
-    private fun setupOnClickListener() {
-        topFilmsAdapter.onFilmItemClickListener = {
-            if (isOnePaneMode()) {
-                val intent = DetailedInfoActivity.newIntent(this, it.filmId)
-                startActivity(intent)
-            } else {
-                val fragment = DetailedInfoFragment.newInstance(it.filmId)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.detailed_film_container, fragment)
-                    .commit()
-            }
-        }
-    }
-
-    private fun setupOnLongClickListener() {
-        topFilmsAdapter.onFilmItemLongClickListener = {
-            viewModel.changeFavoriteState(it)
-            println("DataTopFilmsAdapter = ${viewModel.listTopFilmsItems.value.toString()}")
+        binding.buttonFavorites?.setOnClickListener {
+            startFavoritesFragment()
         }
     }
 
@@ -103,4 +58,15 @@ class MainActivity : AppCompatActivity() {
         return binding.detailedFilmContainer == null
     }
 
+    override fun callDetailedInfoActivityOrFragment(filmId: Int) {
+        if (isOnePaneMode()) {
+            val intent = DetailedInfoActivity.newIntent(this, filmId)
+            startActivity(intent)
+        } else {
+            val fragment = DetailedInfoFragment.newInstance(filmId)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.detailed_film_container, fragment)
+                .commit()
+        }
+    }
 }
