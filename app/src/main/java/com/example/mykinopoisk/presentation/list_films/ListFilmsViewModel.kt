@@ -17,7 +17,9 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
 
     private var page = 1
 
-    val isRefreshing = MutableLiveData<Boolean>()
+    private val _isRefreshing = MutableLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean>
+        get() = _isRefreshing
     val listTopFilmsItems = getTopFilmsUseCase.getTopFilms()
     val listOfFavorites = getTopFilmsUseCase.loadFilmFavorites()
 
@@ -30,15 +32,15 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
             val data = getTopFilmsUseCase.loadFilmsList(page)
             changeFavoriteFlagStatus(data)
             getTopFilmsUseCase.insertTopFilms(data)
-            isRefreshing.value = false
+            _isRefreshing.value = false
             page++
         }
         Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
     }
 
-    fun refreshFilms(){
+    fun refreshFilms() {
         page = 1
-        isRefreshing.value = true
+        _isRefreshing.value = true
         deleteFilmsList()
         loadFilms()
     }

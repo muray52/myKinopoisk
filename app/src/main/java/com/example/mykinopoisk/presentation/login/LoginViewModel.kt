@@ -2,6 +2,7 @@ package com.example.mykinopoisk.presentation.login
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mykinopoisk.data.repository.FilmsRepositoryImpl
@@ -14,18 +15,20 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = FilmsRepositoryImpl(application)
     private val signInUseCase = SignInUseCase(repository)
 
-    val successLogin = MutableLiveData<Boolean>()
+    private val _successLogin = MutableLiveData<Boolean>()
+    val successLogin: LiveData<Boolean>
+        get() = _successLogin
 
     fun signInGuest() {
         if (signInUseCase.signInGuest()) {
-            successLogin.value = true
+            _successLogin.value = true
         }
     }
 
     fun signIn(login: LoginEntity) {
         viewModelScope.launch {
             if (signInUseCase.signIn(login)) {
-                successLogin.value = true
+                _successLogin.value = true
             }
         }
     }

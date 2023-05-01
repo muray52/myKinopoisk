@@ -67,9 +67,7 @@ class FavoriteFilmsFragment : Fragment() {
     }
 
     private fun setupSwipeRefreshLayout() {
-//        binding.idSwipeRefreshLayout.setOnRefreshListener {
-//            viewModel.refreshFilms()
-//        }
+        //TODO("refresh favorites from network")
     }
 
     private fun setupOnClickListener() {
