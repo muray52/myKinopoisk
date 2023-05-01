@@ -1,32 +1,32 @@
-package com.example.mykinopoisk.presentation
+package com.example.mykinopoisk.presentation.list_films
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mykinopoisk.R
-import com.example.mykinopoisk.databinding.ActivityMainBinding
-import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
+import com.example.mykinopoisk.databinding.ActivityListFilmsBinding
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoActivity
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoFragment
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
-import com.example.mykinopoisk.presentation.favorite_films.FavoriteFilmsFragment
-import com.example.mykinopoisk.presentation.top_films.TopFilmsFragment
+import com.example.mykinopoisk.presentation.list_films.favorite_films.FavoriteFilmsFragment
+import com.example.mykinopoisk.presentation.list_films.top_films.TopFilmsFragment
 
-class MainActivity : AppCompatActivity(), DetailedInfoOpen {
+class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
 
-    private lateinit var viewModel: TopFilmsViewModel
+    private lateinit var viewModel: ListFilmsViewModel
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding
+    private var _binding: ActivityListFilmsBinding? = null
+    private val binding: ActivityListFilmsBinding
         get() = _binding ?: throw RuntimeException("ActivityMainBinding is null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityListFilmsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[TopFilmsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ListFilmsViewModel::class.java]
         startPopularFragment()
         onClickButtonListener()
     }
@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity(), DetailedInfoOpen {
     }
 
     private fun onClickButtonListener() {
-        binding.buttonPopular?.setOnClickListener {
+        binding.buttonPopular.setOnClickListener {
             startPopularFragment()
         }
-        binding.buttonFavorites?.setOnClickListener {
+        binding.buttonFavorites.setOnClickListener {
             startFavoritesFragment()
         }
     }
@@ -67,6 +67,14 @@ class MainActivity : AppCompatActivity(), DetailedInfoOpen {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.detailed_film_container, fragment)
                 .commit()
+        }
+    }
+
+    companion object {
+
+        fun newIntent(context: Context): Intent {
+            val intent = Intent(context, ListFilmsActivity::class.java)
+            return intent
         }
     }
 }

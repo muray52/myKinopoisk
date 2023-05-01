@@ -2,6 +2,11 @@
     <string name="app_name">myKinopoisk</string>
     <string name="pupular_appbar">Popular</string>
     <string name="favorite_appbar">Favorites</string>
-    <string name="pupular_button">POPULAR</string>
-    <string name="favorite_button">FAVORITES</string>
+    <string name="pupular_button">Popular</string>
+    <string name="favorite_button">Favorites</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="guest_sign_in_button">Guest Sign In</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+
 </resources>

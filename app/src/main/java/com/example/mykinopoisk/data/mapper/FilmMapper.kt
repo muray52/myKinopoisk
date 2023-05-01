@@ -1,12 +1,10 @@
 package com.example.mykinopoisk.data.mapper
 
-import com.example.mykinopoisk.data.api.model.CountriesApiModel
-import com.example.mykinopoisk.data.api.model.FilmDescriptionApiModel
-import com.example.mykinopoisk.data.api.model.GenresApiModel
-import com.example.mykinopoisk.data.api.model.TopFilmsPagesApiModel
+import com.example.mykinopoisk.data.api.model.*
 import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
+import com.example.mykinopoisk.domain.model.LoginEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
 class FilmMapper {
@@ -145,26 +143,30 @@ class FilmMapper {
         topFlims.favoritesFlag
     )
 
-private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {
-    var genresString = "Жанры:"
-    if (genresArray.size > 1) {
-        for (i in 0 until genresArray.size - 1) {
-            genresString += " " + genresArray[i].genre + ","
-        }
-    }
-    genresString += " " + genresArray.last().genre
-    return genresString
-}
+    fun mapLoginEntityToLoginRequestApiModel(login: LoginEntity) = LoginRequestApiModel(
+        login.email,
+        login.password
+    )
 
-private fun createCountriesString(countriesArray: ArrayList<CountriesApiModel>): String {
-    var countriesString = "Страны:"
-    if (countriesArray.size > 1) {
-        for (i in 0 until countriesArray.size - 1) {
-            countriesString += " " + countriesArray[i].country + ","
+    private fun createGenresString(genresArray: ArrayList<GenresApiModel>): String {
+        var genresString = "Жанры:"
+        if (genresArray.size > 1) {
+            for (i in 0 until genresArray.size - 1) {
+                genresString += " " + genresArray[i].genre + ","
+            }
         }
+        genresString += " " + genresArray.last().genre
+        return genresString
     }
-    countriesString += " " + countriesArray.last().country
-    return countriesString
-}
 
+    private fun createCountriesString(countriesArray: ArrayList<CountriesApiModel>): String {
+        var countriesString = "Страны:"
+        if (countriesArray.size > 1) {
+            for (i in 0 until countriesArray.size - 1) {
+                countriesString += " " + countriesArray[i].country + ","
+            }
+        }
+        countriesString += " " + countriesArray.last().country
+        return countriesString
+    }
 }

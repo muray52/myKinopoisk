@@ -1,4 +1,4 @@
-package com.example.mykinopoisk.presentation.adapter
+package com.example.mykinopoisk.presentation.list_films.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mykinopoisk.domain.model.TopFilmsEntity

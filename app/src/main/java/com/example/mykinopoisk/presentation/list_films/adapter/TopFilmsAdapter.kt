@@ -1,4 +1,4 @@
-package com.example.mykinopoisk.presentation.adapter
+package com.example.mykinopoisk.presentation.list_films.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

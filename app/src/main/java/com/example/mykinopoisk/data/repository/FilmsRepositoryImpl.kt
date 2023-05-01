@@ -4,12 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.room.Transaction
 import com.example.mykinopoisk.data.api.ApiFactory
 import com.example.mykinopoisk.data.db.AppDatabase
 import com.example.mykinopoisk.data.mapper.FilmMapper
+import com.example.mykinopoisk.data.sharedpreferences.SharedPref
 import com.example.mykinopoisk.domain.FilmsRepository
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
+import com.example.mykinopoisk.domain.model.LoginEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
 class FilmsRepositoryImpl(application: Application) : FilmsRepository {
@@ -17,12 +18,19 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
     private val apiService = ApiFactory.apiService
     private val mapper = FilmMapper()
     private val filmsDao = AppDatabase.getInstance(application).filmsDao()
+    private val sharedPref = SharedPref(application)
 
     override suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity> =
-        mapper.mapFilmPagesToTopFilmsEntity(apiService.getTopRateFilms(page = page))
+        mapper.mapFilmPagesToTopFilmsEntity(
+            apiService.getTopRateFilms(
+                page = page,
+                apiKey = sharedPref.getApiKey()
+            )
+        )
 
     override suspend fun getFilmDetailedDescription(filmId: Int): DetailedFilmEntity {
-        val detailedFilmEntity = apiService.getFilmDetailedDescription(filmId)
+        val detailedFilmEntity =
+            apiService.getFilmDetailedDescription(sharedPref.getApiKey(), filmId)
         return mapper.mapFilmDescriptionApiToDetailedFilmEntity(detailedFilmEntity, filmId)
     }
 
@@ -60,5 +68,25 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
 
     override suspend fun updateTopFilms(topFilm: TopFilmsEntity) {
         filmsDao.updateTopFilms(mapper.mapFilmsEntityToTopFilmsDb(topFilm))
+    }
+
+    override fun signInGuest(): Boolean {
+        sharedPref.writeGuestApiKey()
+        return sharedPref.getApiKey() != ""
+    }
+
+
+    override suspend fun signIn(login: LoginEntity): Boolean {
+        val postResponse = apiService.postAuth(
+            mapper.mapLoginEntityToLoginRequestApiModel(login)
+        )
+        val bearer = postResponse.headers().get("authorization")
+        val response = apiService.getXApiKey(bearer ?: "")
+
+        sharedPref.deleteApiKey()
+        response.body()?.token?.let {
+            sharedPref.writeApiKey(it)
+        }
+        return sharedPref.getApiKey() != ""
     }
 }

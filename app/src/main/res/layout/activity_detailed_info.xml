@@ -4,6 +4,6 @@
     android:id="@+id/detailed_film_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.MainActivity"
+    tools:context=".presentation.list_films.ListFilmsActivity"
     tools:layout="@layout/fragment_detailed_info">
 </androidx.fragment.app.FragmentContainerView>

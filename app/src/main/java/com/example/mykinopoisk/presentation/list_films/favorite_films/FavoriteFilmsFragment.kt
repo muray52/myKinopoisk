@@ -1,4 +1,4 @@
-package com.example.mykinopoisk.presentation.top_films
+package com.example.mykinopoisk.presentation.list_films.favorite_films
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mykinopoisk.databinding.FragmentPopularBinding
-import com.example.mykinopoisk.presentation.TopFilmsViewModel
-import com.example.mykinopoisk.presentation.adapter.TopFilmsAdapter
+import com.example.mykinopoisk.presentation.list_films.ListFilmsViewModel
+import com.example.mykinopoisk.presentation.list_films.adapter.TopFilmsAdapter
 import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
 
-class TopFilmsFragment : Fragment() {
+class FavoriteFilmsFragment : Fragment() {
 
     private var topFilmsAdapter = TopFilmsAdapter()
 
-    private val viewModel: TopFilmsViewModel by activityViewModels()
+    private val viewModel: ListFilmsViewModel by activityViewModels()
     private val layoutManagerRv = LinearLayoutManager(context)
 
     private var _binding: FragmentPopularBinding? = null
@@ -28,7 +28,7 @@ class TopFilmsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPopularBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,8 +44,7 @@ class TopFilmsFragment : Fragment() {
     private fun setupObservers() {
         // scrolling refresh- load new pages
         viewModel.listTopFilmsItems.observe(viewLifecycleOwner) {
-            topFilmsAdapter.submitList(it)
-            println("listTopFilmsItems = ${viewModel.listTopFilmsItems.value?.toString()}")
+
         }
         // swiping refresh
         viewModel.isRefreshing.observe(viewLifecycleOwner) {
@@ -53,6 +52,7 @@ class TopFilmsFragment : Fragment() {
         }
 
         viewModel.listOfFavorites.observe(viewLifecycleOwner) {
+            topFilmsAdapter.submitList(it)
         }
     }
 
@@ -62,32 +62,19 @@ class TopFilmsFragment : Fragment() {
             adapter = topFilmsAdapter
             layoutManager = layoutManagerRv
         }
-
-        setupOnScrollListener()
         setupOnClickListener()
         setupOnLongClickListener()
     }
 
     private fun setupSwipeRefreshLayout() {
-        binding.idSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshFilms()
-        }
-    }
-
-    private fun setupOnScrollListener() {
-        binding.rvFilms.setOnScrollChangeListener { _, _, _, _, _ ->
-            if ((layoutManagerRv.findLastCompletelyVisibleItemPosition() >
-                        (topFilmsAdapter.itemCount?.minus(2) ?: 0)
-                        && topFilmsAdapter.itemCount > 0)
-            ) {
-                viewModel.loadFilms()
-            }
-        }
+//        binding.idSwipeRefreshLayout.setOnRefreshListener {
+//            viewModel.refreshFilms()
+//        }
     }
 
     private fun setupOnClickListener() {
         topFilmsAdapter.onFilmItemClickListener = {
-            var detailedInfoOpen: DetailedInfoOpen
+            val detailedInfoOpen: DetailedInfoOpen
             if (context is DetailedInfoOpen) {
                 detailedInfoOpen = context as DetailedInfoOpen
                 detailedInfoOpen.callDetailedInfoActivityOrFragment(it.filmId)
@@ -104,8 +91,8 @@ class TopFilmsFragment : Fragment() {
 
 
     companion object {
-        fun newInstance(): TopFilmsFragment {
-            return TopFilmsFragment()
+        fun newInstance(): FavoriteFilmsFragment {
+            return FavoriteFilmsFragment()
         }
     }
 }

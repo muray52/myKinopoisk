@@ -1,4 +1,4 @@
-package com.example.mykinopoisk.presentation
+package com.example.mykinopoisk.presentation.list_films
 
 import android.app.Application
 import android.util.Log
@@ -9,7 +9,7 @@ import com.example.mykinopoisk.domain.usecases.AddOrRemoveFavoriteFilmsUseCase
 import com.example.mykinopoisk.domain.usecases.GetTopFilmsUseCase
 import kotlinx.coroutines.launch
 
-class TopFilmsViewModel(application: Application) : AndroidViewModel(application) {
+class ListFilmsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FilmsRepositoryImpl(application)
     private val getTopFilmsUseCase = GetTopFilmsUseCase(repository)
@@ -64,7 +64,7 @@ class TopFilmsViewModel(application: Application) : AndroidViewModel(application
     private fun changeFavoriteFlagStatus(listOfFilms: MutableList<TopFilmsEntity>) {
         listOfFilms.forEach { it_film ->
             it_film.favoritesFlag =
-                (listOfFavorites?.value?.filter { it.filmId == it_film.filmId }?.size == 1)
+                (listOfFavorites.value?.filter { it.filmId == it_film.filmId }?.size == 1)
         }
     }
 }
