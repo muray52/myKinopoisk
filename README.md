@@ -8,10 +8,7 @@ Features:
 3. If you want to add movie to favorites use long click. Do you want to delete? The same long click.
 4. Click on movie for openning detailed description.
 
-![screenshot1](https://user-images.githubusercontent.com/5577221/235679897-4901b1f1-28fb-4f14-9027-0c927d4916de.jpg) ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)
-![screenshot3](https://user-images.githubusercontent.com/5577221/235681430-75831679-7722-411c-b524-15c6010f19eb.jpg)
-
-
+![screenshot1](https://user-images.githubusercontent.com/5577221/235679897-4901b1f1-28fb-4f14-9027-0c927d4916de.jpg) ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)![screenshot3](https://user-images.githubusercontent.com/5577221/235681553-a0a8070d-8244-437e-8827-b3cbe726f4be.jpg)
 
 
 
@@ -26,5 +23,5 @@ Techologies:
 
 
 
-
+=========
 The app is still developing. I have big TODO list :)
