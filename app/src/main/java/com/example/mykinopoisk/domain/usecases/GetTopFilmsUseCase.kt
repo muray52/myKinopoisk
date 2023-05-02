@@ -14,6 +14,10 @@ class GetTopFilmsUseCase(private val repository: FilmsRepository) {
         return repository.getFavorites()
     }
 
+    suspend fun reloadFilmFavorites() {
+        return repository.reloadFavorites()
+    }
+
     fun getTopFilms(): LiveData<MutableList<TopFilmsEntity>> {
         return repository.getTopFilms()
     }

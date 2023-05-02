@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.mykinopoisk.data.api.ApiFactory
+import com.example.mykinopoisk.data.api.model.FilmDescriptionApiModel
 import com.example.mykinopoisk.data.db.AppDatabase
 import com.example.mykinopoisk.data.mapper.FilmMapper
 import com.example.mykinopoisk.data.sharedpreferences.SharedPref
@@ -48,6 +49,24 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
         Transformations.map(filmsDao.getFavoritesAll()) {
             mapper.mapFavoritesFilmToFilmsEntity(it)
         }
+
+    override suspend fun reloadFavorites() {
+        val filmFavoritesIDs: List<Int> = filmsDao.getFavoritesAllNoLiveData().map {
+            it.filmId
+        }
+        val filmFavoritesList = mutableListOf<FilmDescriptionApiModel>()
+        filmFavoritesIDs.forEach {
+            filmFavoritesList.add(
+                apiService.getFilmDetailedDescription(sharedPref.getApiKey(), it)
+            )
+        }
+        if (filmFavoritesList.size > 0) {
+            filmsDao.deleteFavoritesAll()
+            mapper.mapFilmDescriptionApiListToFavoritesFilmList(filmFavoritesList).forEach{
+                filmsDao.insertFavorites(it)
+            }
+        }
+    }
 
     override fun getTopFilms(): LiveData<MutableList<TopFilmsEntity>> =
         Transformations.map(filmsDao.getTopFilmsAll()) {

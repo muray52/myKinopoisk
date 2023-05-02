@@ -42,10 +42,6 @@ class FavoriteFilmsFragment : Fragment() {
 
 
     private fun setupObservers() {
-        // scrolling refresh- load new pages
-        viewModel.listTopFilmsItems.observe(viewLifecycleOwner) {
-
-        }
         // swiping refresh
         viewModel.isRefreshing.observe(viewLifecycleOwner) {
             binding.idSwipeRefreshLayout.isRefreshing = it
@@ -67,7 +63,9 @@ class FavoriteFilmsFragment : Fragment() {
     }
 
     private fun setupSwipeRefreshLayout() {
-        //TODO("refresh favorites from network")
+        binding.idSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshFavoritesFilms()
+        }
     }
 
     private fun setupOnClickListener() {

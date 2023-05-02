@@ -17,6 +17,8 @@ interface FilmsRepository {
 
     fun getFavorites(): LiveData<MutableList<TopFilmsEntity>>
 
+    suspend fun reloadFavorites()
+
     fun getTopFilms(): LiveData<MutableList<TopFilmsEntity>>
 
     suspend fun insertTopFilms(topFilms: MutableList<TopFilmsEntity>)

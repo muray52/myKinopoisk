@@ -14,6 +14,9 @@ interface FilmsDao {
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME}")
     fun getFavoritesAll(): LiveData<MutableList<FavoritesFilmDbModel>>
 
+    @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME}")
+    suspend fun getFavoritesAllNoLiveData(): List<FavoritesFilmDbModel>
+
     @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME} WHERE filmId IN (:filmIds)")
     fun getFavoritesByIds(filmIds: IntArray): List<FavoritesFilmDbModel>
 

@@ -93,6 +93,24 @@ class FilmMapper {
         return listOfFavorites
     }
 
+    fun mapFilmDescriptionApiListToFavoritesFilmList(
+        filmsDetailed: MutableList<FilmDescriptionApiModel>
+    ): MutableList<FavoritesFilmDbModel> {
+
+        val listOfFavorites: MutableList<FavoritesFilmDbModel> = mutableListOf()
+        filmsDetailed.forEach {
+            listOfFavorites.add(
+                FavoritesFilmDbModel(
+                    it.kinopoiskId ?: 0,
+                    it.nameRu,
+                    it.year.toString(),
+                    it.posterUrlPreview
+                )
+            )
+        }
+        return listOfFavorites
+    }
+
     fun mapTopFilmsDbToFilmsEntity(
         film: MutableList<TopFilmsDbModel>
     ): MutableList<TopFilmsEntity> {

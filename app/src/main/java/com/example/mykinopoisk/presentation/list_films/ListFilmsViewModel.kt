@@ -45,6 +45,14 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
         loadFilms()
     }
 
+    fun refreshFavoritesFilms() {
+        _isRefreshing.value = true
+        viewModelScope.launch {
+            getTopFilmsUseCase.reloadFilmFavorites()
+            _isRefreshing.value = false
+        }
+    }
+
     private fun deleteFilmsList() {
         viewModelScope.launch {
             getTopFilmsUseCase.deleteTopFilms()
