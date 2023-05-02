@@ -9,7 +9,8 @@ Features:
 4. Click on movie for openning detailed description.
 
 ![screenshot1](https://user-images.githubusercontent.com/5577221/235679897-4901b1f1-28fb-4f14-9027-0c927d4916de.jpg) ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)
-![screenshot3](https://user-images.githubusercontent.com/5577221/235681247-afa2bbae-5888-4154-8263-3ca6b8bf4674.jpg)
+![screenshot3](https://user-images.githubusercontent.com/5577221/235681430-75831679-7722-411c-b524-15c6010f19eb.jpg)
+
 
 
 
