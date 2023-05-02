@@ -8,7 +8,7 @@ Features:
 3. If you want to add movie to favorites use long click. Do you want to delete? The same long click.
 4. Click on movie for openning detailed description.
 
-![screenshot1](https://user-images.githubusercontent.com/5577221/235679610-c1a6c6ae-b77d-45bf-954f-e4c911a75c7c.png)
+![screenshot1](https://user-images.githubusercontent.com/5577221/235679897-4901b1f1-28fb-4f14-9027-0c927d4916de.jpg)
 
 
 
