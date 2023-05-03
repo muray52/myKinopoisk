@@ -1,11 +1,9 @@
 package com.example.mykinopoisk.presentation.detailedinfo
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mykinopoisk.databinding.FragmentDetailedInfoBinding
@@ -30,7 +28,7 @@ class DetailedInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailedInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,7 +37,6 @@ class DetailedInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[DetailedInfoViewModel::class.java]
         viewModel.getDetailedInfo(filmId)
-        binding.idAllGenres.text = "text!!"
         observeViewModel()
     }
 
@@ -50,7 +47,10 @@ class DetailedInfoFragment : Fragment() {
                 idFilmDescription.text = it.description
                 idCountries.text = it.countriesString
                 idFilmName.text = it.nameRu
-                Picasso.get().load(it.posterUrl).into(binding.idFilmBigImage)
+                Picasso.get()
+                    .load(it.posterUrl)
+                    .resize(1000,0)
+                    .into(binding.idFilmBigImage)
             }
         }
     }

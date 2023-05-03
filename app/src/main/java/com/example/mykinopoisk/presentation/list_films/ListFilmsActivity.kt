@@ -32,6 +32,7 @@ class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
     }
 
     private fun startPopularFragment() {
+        binding.idTabName?.text = resources.getString(R.string.pupular_appbar)
         val fragment = TopFilmsFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.film_list_container, fragment)
@@ -39,6 +40,7 @@ class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
     }
 
     private fun startFavoritesFragment() {
+        binding.idTabName?.text = resources.getString(R.string.favorite_appbar)
         val fragment = FavoriteFilmsFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.film_list_container, fragment)

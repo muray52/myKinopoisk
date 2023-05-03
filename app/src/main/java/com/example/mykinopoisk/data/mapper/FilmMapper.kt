@@ -15,10 +15,6 @@ class FilmMapper {
         val topFilms = filmPages.films
         topFilms.forEach {
 
-            val genresArray = it.genres
-            val mainGenre =
-                genresArray[0].genre?.replaceFirstChar { it_genre -> it_genre.uppercase() }
-            val genreAndYear = mainGenre + "(" + it.year + ")"
             topFilmsEntity.add(
                 TopFilmsEntity(
                     0,
@@ -27,7 +23,7 @@ class FilmMapper {
                     it.year,
                     it.countries,
                     it.genres,
-                    genreAndYear,
+                    createGenreAndYear(it.genres, it.year ?: ""),
                     it.posterUrl,
                     it.posterUrlPreview,
                     false
@@ -125,7 +121,7 @@ class FilmMapper {
                     it.year,
                     arrayListOf(),
                     arrayListOf(),
-                    null,
+                    it.genreAndYear,
                     null,
                     it.posterUrlPreview,
                     it.favoritesFlag
@@ -144,6 +140,7 @@ class FilmMapper {
                     it.filmId,
                     it.nameRu,
                     it.year,
+                    createGenreAndYear(it.genres, it.year?:""),
                     it.posterUrlPreview,
                     it.favoritesFlag
                 )
@@ -157,6 +154,7 @@ class FilmMapper {
         topFlims.filmId,
         topFlims.nameRu,
         topFlims.year,
+        topFlims.genreAndYear,
         topFlims.posterUrlPreview,
         topFlims.favoritesFlag
     )
@@ -186,5 +184,11 @@ class FilmMapper {
         }
         countriesString += " " + countriesArray.last().country
         return countriesString
+    }
+
+    private fun createGenreAndYear(genresArray: ArrayList<GenresApiModel>, year: String): String {
+        val mainGenre =
+            genresArray[0].genre?.replaceFirstChar { it_genre -> it_genre.uppercase() }
+        return mainGenre + "(" + year + ")"
     }
 }

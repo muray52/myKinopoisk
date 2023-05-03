@@ -81,7 +81,6 @@ class FavoriteFilmsFragment : Fragment() {
     private fun setupOnLongClickListener() {
         topFilmsAdapter.onFilmItemLongClickListener = {
             viewModel.changeFavoriteState(it)
-            println("DataTopFilmsAdapter = ${viewModel.listTopFilmsItems.value.toString()}")
         }
     }
 

@@ -38,7 +38,6 @@
                     android:layout_height="30dp"
                     android:layout_marginVertical="10dp"
                     android:singleLine="true"
-                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -49,7 +48,6 @@
                 android:id="@+id/tvGenreAndYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:textSize="10sp" />
 
         </LinearLayout>
