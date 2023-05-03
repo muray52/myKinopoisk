@@ -62,7 +62,7 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     fun changeFavoriteState(filmItem: TopFilmsEntity) {
         viewModelScope.launch {
             val newItem = filmItem.copy(favoritesFlag = !filmItem.favoritesFlag)
-            getTopFilmsUseCase.updateTopFilms(newItem)
+            getTopFilmsUseCase.updateTopFilms(newItem.filmId, newItem.favoritesFlag)
             if (newItem.favoritesFlag) {
                 addOrRemoveFavoriteFilmsUseCase.addFilmToFavorite(newItem)
             } else {

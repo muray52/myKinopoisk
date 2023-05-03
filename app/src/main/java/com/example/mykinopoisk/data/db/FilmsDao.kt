@@ -40,8 +40,9 @@ interface FilmsDao {
     @Insert(entity = TopFilmsDbModel::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopFilms(topFilms: List<TopFilmsDbModel>)
 
-    @Update(entity = TopFilmsDbModel::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateTopFilms(topFilms: TopFilmsDbModel)
+    //@Update(entity = TopFilmsDbModel::class)
+    @Query("UPDATE ${TopFilmsDbModel.TABLE_NAME} SET favoritesFlag = :favoritesFlag WHERE filmId =:filmId")
+    suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean)
 
     @Query("DELETE FROM ${TopFilmsDbModel.TABLE_NAME} WHERE filmId = :filmId ")
     suspend fun deleteTopFilmsById(filmId: Int)

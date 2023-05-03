@@ -85,8 +85,8 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
         filmsDao.deleteTopFilmsById(filmId)
     }
 
-    override suspend fun updateTopFilms(topFilm: TopFilmsEntity) {
-        filmsDao.updateTopFilms(mapper.mapFilmsEntityToTopFilmsDb(topFilm))
+    override suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean) {
+        filmsDao.updateTopFilms(filmId, favoritesFlag)
     }
 
     override fun signInGuest(): Boolean {

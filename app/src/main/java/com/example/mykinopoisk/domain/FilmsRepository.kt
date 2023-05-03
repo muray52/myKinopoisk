@@ -27,7 +27,7 @@ interface FilmsRepository {
 
     suspend fun deleteTopFilmsById(filmId: Int)
 
-    suspend fun updateTopFilms(topFilm: TopFilmsEntity)
+    suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean)
 
     fun signInGuest(): Boolean
 

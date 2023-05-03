@@ -34,7 +34,7 @@ class GetTopFilmsUseCase(private val repository: FilmsRepository) {
         return repository.deleteTopFilmsById(filmId)
     }
 
-    suspend fun updateTopFilms(topFilm: TopFilmsEntity) {
-        return repository.updateTopFilms(topFilm)
+    suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean) {
+        return repository.updateTopFilms(filmId, favoritesFlag)
     }
 }
