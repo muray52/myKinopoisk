@@ -13,6 +13,8 @@ data class FavoritesFilmDbModel(
     val nameRu: String?,
     @ColumnInfo(name = "year")
     val year: String?,
+    @ColumnInfo(name = "genreAndYear")
+    val genreAndYear: String?,
     @ColumnInfo(name = "posterUrlPreview")
     val posterUrlPreview: String?
 ) {

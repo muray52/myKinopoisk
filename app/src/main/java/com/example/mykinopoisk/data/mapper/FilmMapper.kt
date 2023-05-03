@@ -61,6 +61,7 @@ class FilmMapper {
             film.filmId,
             film.nameRu,
             film.year,
+            film.genreAndYear,
             film.posterUrlPreview
         )
     }
@@ -79,7 +80,7 @@ class FilmMapper {
                     it.year,
                     arrayListOf(),
                     arrayListOf(),
-                    null,
+                    it.genreAndYear,
                     null,
                     it.posterUrlPreview,
                     true
@@ -100,6 +101,7 @@ class FilmMapper {
                     it.kinopoiskId ?: 0,
                     it.nameRu,
                     it.year.toString(),
+                    createGenreAndYear(it.genres,it.year.toString()),
                     it.posterUrlPreview
                 )
             )
@@ -148,16 +150,6 @@ class FilmMapper {
         }
         return listOfTopFilms
     }
-
-    fun mapFilmsEntityToTopFilmsDb(topFlims: TopFilmsEntity) = TopFilmsDbModel(
-        topFlims.id,
-        topFlims.filmId,
-        topFlims.nameRu,
-        topFlims.year,
-        topFlims.genreAndYear,
-        topFlims.posterUrlPreview,
-        topFlims.favoritesFlag
-    )
 
     fun mapLoginEntityToLoginRequestApiModel(login: LoginEntity) = LoginRequestApiModel(
         login.email,

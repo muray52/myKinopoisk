@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
-import com.example.mykinopoisk.domain.model.TopFilmsEntity
-import androidx.room.DeleteTable as DeleteTable1
 
 @Dao
 interface FilmsDao {
@@ -40,7 +38,6 @@ interface FilmsDao {
     @Insert(entity = TopFilmsDbModel::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopFilms(topFilms: List<TopFilmsDbModel>)
 
-    //@Update(entity = TopFilmsDbModel::class)
     @Query("UPDATE ${TopFilmsDbModel.TABLE_NAME} SET favoritesFlag = :favoritesFlag WHERE filmId =:filmId")
     suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean)
 

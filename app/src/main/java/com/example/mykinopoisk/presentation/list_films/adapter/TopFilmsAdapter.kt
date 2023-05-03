@@ -34,28 +34,28 @@ class TopFilmsAdapter() : ListAdapter<TopFilmsEntity, TopFilmsViewHolder>(TopFil
 
     override fun onBindViewHolder(holder: TopFilmsViewHolder, position: Int) {
         val binding = holder.binding
-        val topFilmsItem = getItem(position)
+        val filmsItem = getItem(position)
 
         when (binding) {
             is TopFilmsItemBinding -> {
-                binding.tvNameRu.text = topFilmsItem.nameRu
-                binding.tvGenreAndYear.text = topFilmsItem.genreAndYear
-                Picasso.get().load(topFilmsItem.posterUrlPreview)
+                binding.tvNameRu.text = filmsItem.nameRu
+                binding.tvGenreAndYear.text = filmsItem.genreAndYear
+                Picasso.get().load(filmsItem.posterUrlPreview)
                     .into(binding.ivIconMovie)
             }
             is TopFilmsItemFavoritesBinding -> {
-                binding.tvNameRu.text = topFilmsItem.nameRu
-                binding.tvGenreAndYear.text = topFilmsItem.genreAndYear
-                Picasso.get().load(topFilmsItem.posterUrlPreview)
+                binding.tvNameRu.text = filmsItem.nameRu
+                binding.tvGenreAndYear.text = filmsItem.genreAndYear
+                Picasso.get().load(filmsItem.posterUrlPreview)
                     .into(binding.ivIconMovie)
             }
         }
 
         holder.itemView.setOnClickListener {
-            onFilmItemClickListener?.invoke(topFilmsItem)
+            onFilmItemClickListener?.invoke(filmsItem)
         }
         holder.itemView.setOnLongClickListener {
-            onFilmItemLongClickListener?.invoke(topFilmsItem)
+            onFilmItemLongClickListener?.invoke(filmsItem)
             true
         }
     }

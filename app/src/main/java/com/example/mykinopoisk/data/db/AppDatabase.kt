@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
 
-@Database(entities = [FavoritesFilmDbModel::class, TopFilmsDbModel::class], version = 6, exportSchema = false)
+@Database(entities = [FavoritesFilmDbModel::class, TopFilmsDbModel::class], version = 7, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
 
