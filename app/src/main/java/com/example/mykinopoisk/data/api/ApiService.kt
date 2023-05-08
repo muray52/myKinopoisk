@@ -18,7 +18,7 @@ interface ApiService {
         @Header("X-API-KEY") apiKey: String,
         @Query("type") type: String = "QUERY_TYPE_TOP_100",
         @Query("page") page: Int
-    ): TopFilmsPagesApiModel
+    ): Response<TopFilmsPagesApiModel>
 
     @Headers(
         "Content-Type: application/json"

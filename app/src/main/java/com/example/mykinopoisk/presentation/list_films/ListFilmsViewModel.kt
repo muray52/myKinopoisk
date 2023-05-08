@@ -37,11 +37,11 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
                 val data = getTopFilmsUseCase.loadFilmsList(page)
                 changeFavoriteFlagStatus(data)
                 getTopFilmsUseCase.insertTopFilms(data)
-                _isRefreshing.value = false
                 page++
             } catch (exception: Exception) {
                 _errorResponseMessage.postValue(exception.message)
             }
+            _isRefreshing.value = false
         }
         Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
     }

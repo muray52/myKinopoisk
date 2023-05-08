@@ -1,5 +1,6 @@
 package com.example.mykinopoisk.util
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -32,20 +33,24 @@ abstract class BaseRepo() {
                     // response in ExampleErrorResponse pojo
 //                    val errorResponse: ExampleErrorResponse? = convertErrorBody(response.errorBody())
                     // Simply returning api's own failure message
+                    Log.e("CONNECTION_ERROR", response.errorBody().toString())
                     ResponseResourse.Error(errorMessage = response.errorBody().toString())
                 }
 
             } catch (e: HttpException) {
                 // Returning HttpException's message
                 // wrapped in Resource.Error
+                Log.e("CONNECTION_ERROR", e.message.toString())
                 ResponseResourse.Error(errorMessage = e.message ?: "Something went wrong")
             } catch (e: IOException) {
                 // Returning no internet message
                 // wrapped in Resource.Error
+                Log.e("CONNECTION_ERROR", "IOException")
                 ResponseResourse.Error("Please check your network connection")
             } catch (e: Exception) {
                 // Returning 'Something went wrong' in case
                 // of unknown error wrapped in Resource.Error
+                Log.e("CONNECTION_ERROR", "Unexpected exception")
                 ResponseResourse.Error(errorMessage = "Something went wrong")
             }
         }

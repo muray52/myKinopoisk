@@ -22,18 +22,24 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
     private val filmsDao = AppDatabase.getInstance(application).filmsDao()
     private val sharedPref = SharedPref(application)
 
-    override suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity> =
-        mapper.mapFilmPagesToTopFilmsEntity(
+    override suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity> {
+        val response = safeApiCall {
             apiService.getTopRateFilms(
                 page = page,
                 apiKey = sharedPref.getApiKey()
             )
-        )
+        }
+        return if (response.body != null) {
+            mapper.mapFilmPagesToTopFilmsEntity(response.body)
+        } else {
+            throw Exception(response.message)
+        }
+    }
 
     override suspend fun getFilmDetailedDescription(filmId: Int): DetailedFilmEntity {
         val response =
-            safeApiCall{apiService.getFilmDetailedDescription(sharedPref.getApiKey(), filmId)}
-        return if(response.body != null) {
+            safeApiCall { apiService.getFilmDetailedDescription(sharedPref.getApiKey(), filmId) }
+        return if (response.body != null) {
             mapper.mapFilmDescriptionApiToDetailedFilmEntity(response.body, filmId)
         } else {
             throw Exception(response.message)
@@ -103,8 +109,11 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
 
 
     override suspend fun signIn(login: LoginEntity): Boolean {
-        val postResponse = safeApiCall{apiService.postAuth(
-            mapper.mapLoginEntityToLoginRequestApiModel(login))}
+        val postResponse = safeApiCall {
+            apiService.postAuth(
+                mapper.mapLoginEntityToLoginRequestApiModel(login)
+            )
+        }
 
         val bearer = postResponse.headers?.get("authorization")
         val response = apiService.getXApiKey(bearer ?: "")
