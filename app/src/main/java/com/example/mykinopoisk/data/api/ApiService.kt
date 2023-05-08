@@ -27,7 +27,7 @@ interface ApiService {
     suspend fun getFilmDetailedDescription(
         @Header("X-API-KEY") apiKey: String,
         @Path("FilmId") filmId: Int
-    ): FilmDescriptionApiModel
+    ): Response<FilmDescriptionApiModel>
 
     @POST("/api/v1/auth/login")
     suspend fun postAuth(

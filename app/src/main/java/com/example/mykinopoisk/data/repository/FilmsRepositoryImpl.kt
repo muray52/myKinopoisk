@@ -13,8 +13,9 @@ import com.example.mykinopoisk.domain.FilmsRepository
 import com.example.mykinopoisk.domain.model.DetailedFilmEntity
 import com.example.mykinopoisk.domain.model.LoginEntity
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
+import com.example.mykinopoisk.util.BaseRepo
 
-class FilmsRepositoryImpl(application: Application) : FilmsRepository {
+class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo() {
 
     private val apiService = ApiFactory.apiService
     private val mapper = FilmMapper()
@@ -30,9 +31,13 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
         )
 
     override suspend fun getFilmDetailedDescription(filmId: Int): DetailedFilmEntity {
-        val detailedFilmEntity =
-            apiService.getFilmDetailedDescription(sharedPref.getApiKey(), filmId)
-        return mapper.mapFilmDescriptionApiToDetailedFilmEntity(detailedFilmEntity, filmId)
+        val response =
+            safeApiCall{apiService.getFilmDetailedDescription(sharedPref.getApiKey(), filmId)}
+        return if(response.body != null) {
+            mapper.mapFilmDescriptionApiToDetailedFilmEntity(response.body, filmId)
+        } else {
+            throw Exception(response.message)
+        }
     }
 
     override suspend fun addToFavorites(film: TopFilmsEntity) {
@@ -56,13 +61,15 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
         }
         val filmFavoritesList = mutableListOf<FilmDescriptionApiModel>()
         filmFavoritesIDs.forEach {
-            filmFavoritesList.add(
-                apiService.getFilmDetailedDescription(sharedPref.getApiKey(), it)
-            )
+            apiService.getFilmDetailedDescription(sharedPref.getApiKey(), it)?.body()?.let { it1 ->
+                filmFavoritesList.add(
+                    it1
+                )
+            }
         }
         if (filmFavoritesList.size > 0) {
             filmsDao.deleteFavoritesAll()
-            mapper.mapFilmDescriptionApiListToFavoritesFilmList(filmFavoritesList).forEach{
+            mapper.mapFilmDescriptionApiListToFavoritesFilmList(filmFavoritesList).forEach {
                 filmsDao.insertFavorites(it)
             }
         }
@@ -96,10 +103,10 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository {
 
 
     override suspend fun signIn(login: LoginEntity): Boolean {
-        val postResponse = apiService.postAuth(
-            mapper.mapLoginEntityToLoginRequestApiModel(login)
-        )
-        val bearer = postResponse.headers().get("authorization")
+        val postResponse = safeApiCall{apiService.postAuth(
+            mapper.mapLoginEntityToLoginRequestApiModel(login))}
+
+        val bearer = postResponse.headers?.get("authorization")
         val response = apiService.getXApiKey(bearer ?: "")
 
         sharedPref.deleteApiKey()

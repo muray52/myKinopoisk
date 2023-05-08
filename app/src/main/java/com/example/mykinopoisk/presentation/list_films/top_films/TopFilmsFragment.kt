@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +23,7 @@ class TopFilmsFragment : Fragment() {
     private var _binding: FragmentPopularBinding? = null
     private val binding: FragmentPopularBinding
         get() = _binding ?: throw RuntimeException("FragmentDetailedInfoBinding is null")
-
+    private var toastMessage: Toast? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +54,16 @@ class TopFilmsFragment : Fragment() {
 
         viewModel.listOfFavorites.observe(viewLifecycleOwner) {
         }
+
+        viewModel.errorResponseMessage.observe(viewLifecycleOwner){
+            toastObserve(it)
+        }
+    }
+
+    private fun toastObserve(message: String){
+        toastMessage?.cancel()
+        toastMessage = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        toastMessage?.show()
     }
 
     private fun setupRecyclerView() {

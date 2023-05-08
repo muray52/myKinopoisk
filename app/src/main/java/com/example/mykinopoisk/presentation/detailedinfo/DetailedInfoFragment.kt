@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mykinopoisk.databinding.FragmentDetailedInfoBinding
@@ -13,11 +14,10 @@ class DetailedInfoFragment : Fragment() {
 
     private var filmId: Int = 0
     private lateinit var viewModel: DetailedInfoViewModel
-
     private var _binding: FragmentDetailedInfoBinding? = null
     private val binding: FragmentDetailedInfoBinding
         get() = _binding ?: throw RuntimeException("FragmentDetailedInfoBinding is null")
-
+    private var toastMessage: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +53,10 @@ class DetailedInfoFragment : Fragment() {
                     .into(binding.idFilmBigImage)
             }
         }
+
+        viewModel.errorResponseMessage.observe(viewLifecycleOwner){
+            toastObserve(it)
+        }
     }
 
     private fun parseParams() {
@@ -64,6 +68,11 @@ class DetailedInfoFragment : Fragment() {
         filmId = args.getInt(FILM_ID, 0)
     }
 
+    private fun toastObserve(message: String){
+        toastMessage?.cancel()
+        toastMessage = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toastMessage?.show()
+    }
 
     companion object {
         private const val FILM_ID = "filmId"

@@ -8,5 +8,7 @@
     <string name="guest_sign_in_button">Guest Sign In</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
+    <string name="toast_guest_error">Guest user credentials are not correct</string>
+    <string name="toast_user_error">User credentials are not correct</string>
 
 </resources>

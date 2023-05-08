@@ -16,9 +16,17 @@ class DetailedInfoViewModel(application: Application) : AndroidViewModel(applica
     val detailedInfo: LiveData<DetailedFilmEntity>
         get() = _detailedInfo
 
+    private val _errorResponseMessage = MutableLiveData<String>()
+    val errorResponseMessage: LiveData<String>
+        get() = _errorResponseMessage
+
     fun getDetailedInfo(filmId: Int) {
         viewModelScope.launch {
-            _detailedInfo.postValue(getDetailedFilmInfoUseCase.getFilmDetailedDescription(filmId))
+            try {
+                _detailedInfo.postValue(getDetailedFilmInfoUseCase.getFilmDetailedDescription(filmId))
+            } catch (exception: Exception) {
+                _errorResponseMessage.postValue(exception.message)
+            }
         }
     }
 

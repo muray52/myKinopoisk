@@ -15,6 +15,7 @@ class LoginActivity : AppCompatActivity() {
     private var _binding: ActivityLoginBinding? = null
     private val binding: ActivityLoginBinding
         get() = _binding ?: throw RuntimeException("ActivityLoginBinding is null")
+    private var toastMessage: Toast? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +32,17 @@ class LoginActivity : AppCompatActivity() {
         viewModel.successLogin.observe(this) {
             if (it) {
                 startListFilmsActivity()
-            } else {
-                Toast.makeText(this, "Error Login", Toast.LENGTH_SHORT).show()
             }
         }
+        viewModel.errorResponseMessage.observe(this){
+            toastObserve(it)
+        }
+    }
+
+    private fun toastObserve(message: String){
+        toastMessage?.cancel()
+        toastMessage = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toastMessage?.show()
     }
 
     private fun setupListeners() {

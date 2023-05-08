@@ -23,17 +23,25 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     val listTopFilmsItems = getTopFilmsUseCase.getTopFilms()
     val listOfFavorites = getTopFilmsUseCase.loadFilmFavorites()
 
+    private val _errorResponseMessage = MutableLiveData<String>()
+    val errorResponseMessage: LiveData<String>
+        get() = _errorResponseMessage
+
     init {
         refreshFilms()
     }
 
     fun loadFilms() {
         viewModelScope.launch {
-            val data = getTopFilmsUseCase.loadFilmsList(page)
-            changeFavoriteFlagStatus(data)
-            getTopFilmsUseCase.insertTopFilms(data)
-            _isRefreshing.value = false
-            page++
+            try {
+                val data = getTopFilmsUseCase.loadFilmsList(page)
+                changeFavoriteFlagStatus(data)
+                getTopFilmsUseCase.insertTopFilms(data)
+                _isRefreshing.value = false
+                page++
+            } catch (exception: Exception) {
+                _errorResponseMessage.postValue(exception.message)
+            }
         }
         Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
     }
