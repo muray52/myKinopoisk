@@ -9,22 +9,18 @@ import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
 class FilmMapper {
 
-    fun mapFilmPagesToTopFilmsEntity(filmPages: TopFilmsPagesApiModel): MutableList<TopFilmsEntity> {
-        val topFilmsEntity: MutableList<TopFilmsEntity> = mutableListOf()
+    fun mapFilmPagesToTopFilmsDbModel(filmPages: TopFilmsPagesApiModel): MutableList<TopFilmsDbModel> {
+        val topFilmsEntity: MutableList<TopFilmsDbModel> = mutableListOf()
 
         val topFilms = filmPages.films
         topFilms.forEach {
-
             topFilmsEntity.add(
-                TopFilmsEntity(
+                TopFilmsDbModel(
                     0,
                     it.filmId,
                     it.nameRu,
                     it.year,
-                    it.countries,
-                    it.genres,
                     createGenreAndYear(it.genres, it.year ?: ""),
-                    it.posterUrl,
                     it.posterUrlPreview,
                     false
                 )

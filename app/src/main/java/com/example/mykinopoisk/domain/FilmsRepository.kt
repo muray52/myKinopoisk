@@ -7,7 +7,7 @@ import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
 interface FilmsRepository {
 
-    suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity>
+    suspend fun loadFilmsList(page: Int)
 
     suspend fun getFilmDetailedDescription(filmId: Int): DetailedFilmEntity
 

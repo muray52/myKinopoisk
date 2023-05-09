@@ -19,7 +19,7 @@ data class TopFilmsDbModel(
     @ColumnInfo(name = "posterUrlPreview")
     val posterUrlPreview: String?,
     @ColumnInfo(name = "favoritesFlag")
-    val favoritesFlag: Boolean
+    var favoritesFlag: Boolean
 ) {
     companion object {
         const val TABLE_NAME = "top_films"

@@ -34,16 +34,17 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     fun loadFilms() {
         viewModelScope.launch {
             try {
-                val data = getTopFilmsUseCase.loadFilmsList(page)
-                changeFavoriteFlagStatus(data)
-                getTopFilmsUseCase.insertTopFilms(data)
+                getTopFilmsUseCase.loadFilmsList(page)
                 page++
+                Log.d(
+                    "TOP_FILM",
+                    "Data loaded. Page = $page, size = ${listTopFilmsItems.value?.size}"
+                )
             } catch (exception: Exception) {
                 _errorResponseMessage.postValue(exception.message)
             }
             _isRefreshing.value = false
         }
-        Log.d("TEST_SCROLL", "page = $page, size = ${listTopFilmsItems.value?.size}")
     }
 
     fun refreshFilms() {
@@ -76,13 +77,6 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
             } else {
                 addOrRemoveFavoriteFilmsUseCase.removeFilmFromFavorite(newItem.filmId)
             }
-        }
-    }
-
-    private fun changeFavoriteFlagStatus(listOfFilms: MutableList<TopFilmsEntity>) {
-        listOfFilms.forEach { it_film ->
-            it_film.favoritesFlag =
-                (listOfFavorites.value?.filter { it.filmId == it_film.filmId }?.size == 1)
         }
     }
 }

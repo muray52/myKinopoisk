@@ -7,6 +7,8 @@ import androidx.lifecycle.Transformations
 import com.example.mykinopoisk.data.api.ApiFactory
 import com.example.mykinopoisk.data.api.model.FilmDescriptionApiModel
 import com.example.mykinopoisk.data.db.AppDatabase
+import com.example.mykinopoisk.data.db.model.FavoritesFilmDbModel
+import com.example.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.example.mykinopoisk.data.mapper.FilmMapper
 import com.example.mykinopoisk.data.sharedpreferences.SharedPref
 import com.example.mykinopoisk.domain.FilmsRepository
@@ -22,15 +24,18 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
     private val filmsDao = AppDatabase.getInstance(application).filmsDao()
     private val sharedPref = SharedPref(application)
 
-    override suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity> {
+    override suspend fun loadFilmsList(page: Int) {
         val response = safeApiCall {
             apiService.getTopRateFilms(
                 page = page,
                 apiKey = sharedPref.getApiKey()
             )
         }
-        return if (response.body != null) {
-            mapper.mapFilmPagesToTopFilmsEntity(response.body)
+        if (response.body != null) {
+            val listOfFavorites = filmsDao.getFavoritesAllNoLiveData()
+            val listOfFilms = mapper.mapFilmPagesToTopFilmsDbModel(response.body)
+            changeFavoriteFlagStatus(listOfFilms, listOfFavorites)
+            filmsDao.insertTopFilms(listOfFilms)
         } else {
             throw Exception(response.message)
         }
@@ -67,7 +72,7 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
         }
         val filmFavoritesList = mutableListOf<FilmDescriptionApiModel>()
         filmFavoritesIDs.forEach {
-            apiService.getFilmDetailedDescription(sharedPref.getApiKey(), it)?.body()?.let { it1 ->
+            apiService.getFilmDetailedDescription(sharedPref.getApiKey(), it).body()?.let { it1 ->
                 filmFavoritesList.add(
                     it1
                 )
@@ -123,5 +128,15 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
             sharedPref.writeApiKey(it)
         }
         return sharedPref.getApiKey() != ""
+    }
+
+    private fun changeFavoriteFlagStatus(
+        listOfFilms: List<TopFilmsDbModel>,
+        listOfFavorites: List<FavoritesFilmDbModel>
+    ) {
+        listOfFilms.forEach { it_film ->
+            it_film.favoritesFlag =
+                (listOfFavorites.filter { it.filmId == it_film.filmId }.size == 1)
+        }
     }
 }

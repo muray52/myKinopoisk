@@ -6,8 +6,8 @@ import com.example.mykinopoisk.domain.model.TopFilmsEntity
 
 class GetTopFilmsUseCase(private val repository: FilmsRepository) {
 
-    suspend fun loadFilmsList(page: Int): MutableList<TopFilmsEntity> {
-        return repository.loadFilmsList(page)
+    suspend fun loadFilmsList(page: Int) {
+        repository.loadFilmsList(page)
     }
 
     fun loadFilmFavorites(): LiveData<MutableList<TopFilmsEntity>> {
@@ -22,16 +22,8 @@ class GetTopFilmsUseCase(private val repository: FilmsRepository) {
         return repository.getTopFilms()
     }
 
-    suspend fun insertTopFilms(topFilms: MutableList<TopFilmsEntity>) {
-        return repository.insertTopFilms(topFilms)
-    }
-
     suspend fun deleteTopFilms() {
         repository.deleteTopFilms()
-    }
-
-    suspend fun deleteTopFilmsById(filmId: Int) {
-        return repository.deleteTopFilmsById(filmId)
     }
 
     suspend fun updateTopFilms(filmId: Int, favoritesFlag: Boolean) {
