@@ -46,4 +46,10 @@ interface FilmsDao {
 
     @Query("DELETE FROM ${TopFilmsDbModel.TABLE_NAME}")
     suspend fun deleteTopFilmsAll()
+
+    @Query("SELECT * FROM ${TopFilmsDbModel.TABLE_NAME} WHERE nameRu LIKE '%' || :mask || '%'")
+    suspend fun searchTopFilmsByMask(mask: String): MutableList<TopFilmsDbModel>
+
+    @Query("SELECT * FROM ${FavoritesFilmDbModel.TABLE_NAME} WHERE nameRu LIKE '%' || :mask || '%'")
+    suspend fun searchFavoriteFilmsByMask(mask: String): MutableList<FavoritesFilmDbModel>
 }

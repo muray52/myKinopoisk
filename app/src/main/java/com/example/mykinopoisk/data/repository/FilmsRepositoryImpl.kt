@@ -36,6 +36,10 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
             val listOfFilms = mapper.mapFilmPagesToTopFilmsDbModel(response.body)
             changeFavoriteFlagStatus(listOfFilms, listOfFavorites)
             filmsDao.insertTopFilms(listOfFilms)
+            Log.d(
+                "REPOSITORY",
+                "Film data loaded. Page = $page has been loaded"
+            )
         } else {
             throw Exception(response.message)
         }
@@ -52,18 +56,18 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
     }
 
     override suspend fun addToFavorites(film: TopFilmsEntity) {
-        Log.d("TEST_DB", "add_filmId = ${film.filmId}")
+        Log.d("REPOSITORY", "The film has been added, add_filmId = ${film.filmId}")
         filmsDao.insertFavorites(mapper.mapFilmsEntityToFavoritesFilm(film))
     }
 
     override suspend fun removeFromFavorites(filmId: Int) {
-        Log.d("TEST_DB", "delete_filmId = $filmId")
+        Log.d("REPOSITORY", "The film has been deleted, delete_filmId = $filmId")
         filmsDao.deleteFavoritesById(filmId)
     }
 
     override fun getFavorites(): LiveData<MutableList<TopFilmsEntity>> =
         Transformations.map(filmsDao.getFavoritesAll()) {
-            mapper.mapFavoritesFilmToFilmsEntity(it)
+            mapper.mapFavoritesFilmDbToFilmsEntity(it)
         }
 
     override suspend fun reloadFavorites() {
@@ -139,4 +143,12 @@ class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo(
                 (listOfFavorites.filter { it.filmId == it_film.filmId }.size == 1)
         }
     }
+
+    override suspend fun searchFilmsPopular(mask: String): MutableList<TopFilmsEntity> =
+        mapper.mapTopFilmsDbToFilmsEntity(filmsDao.searchTopFilmsByMask(mask))
+
+    override suspend fun searchFilmsFavorites(mask: String): MutableList<TopFilmsEntity> =
+        mapper.mapFavoritesFilmDbToFilmsEntity(filmsDao.searchFavoriteFilmsByMask(mask))
+
+
 }

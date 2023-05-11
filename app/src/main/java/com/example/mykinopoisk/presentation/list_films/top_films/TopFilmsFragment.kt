@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,28 +40,33 @@ class TopFilmsFragment : Fragment() {
         setupRecyclerView()
         setupSwipeRefreshLayout()
         setupObservers()
+        setupSearch()
     }
 
 
     private fun setupObservers() {
         // scrolling refresh- load new pages
-        viewModel.listTopFilmsItems.observe(viewLifecycleOwner) {
+        viewModel.listTopFilms.observe(viewLifecycleOwner) {
             topFilmsAdapter.submitList(it)
         }
+
         // swiping refresh
         viewModel.isRefreshing.observe(viewLifecycleOwner) {
             binding.idSwipeRefreshLayout.isRefreshing = it
         }
 
-        viewModel.listOfFavorites.observe(viewLifecycleOwner) {
+        //toast with errors
+        viewModel.errorResponseMessage.observe(viewLifecycleOwner) {
+            toastObserve(it)
         }
 
-        viewModel.errorResponseMessage.observe(viewLifecycleOwner){
-            toastObserve(it)
+        //search bar
+        viewModel.searchTopFilms.observe(viewLifecycleOwner) {
+            topFilmsAdapter.submitList(it)
         }
     }
 
-    private fun toastObserve(message: String){
+    private fun toastObserve(message: String) {
         toastMessage?.cancel()
         toastMessage = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
         toastMessage?.show()
@@ -88,7 +94,7 @@ class TopFilmsFragment : Fragment() {
         binding.rvFilms.setOnScrollChangeListener { _, _, _, _, _ ->
             if ((layoutManagerRv.findLastCompletelyVisibleItemPosition() >
                         (topFilmsAdapter.itemCount.minus(2))
-                        && topFilmsAdapter.itemCount > 0)
+                        && topFilmsAdapter.itemCount > 3)
             ) {
                 viewModel.loadFilms()
             }
@@ -109,6 +115,20 @@ class TopFilmsFragment : Fragment() {
         topFilmsAdapter.onFilmItemLongClickListener = {
             viewModel.changeFavoriteState(it)
         }
+    }
+
+    private fun setupSearch() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(mask: String?): Boolean {
+                viewModel.searchTopFilms(mask ?: "")
+                return false
+            }
+
+        })
     }
 
 

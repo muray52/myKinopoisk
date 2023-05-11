@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,7 @@ class FavoriteFilmsFragment : Fragment() {
         setupRecyclerView()
         setupSwipeRefreshLayout()
         setupObservers()
+        setupSearch()
     }
 
 
@@ -47,7 +49,13 @@ class FavoriteFilmsFragment : Fragment() {
             binding.idSwipeRefreshLayout.isRefreshing = it
         }
 
+        //list of favorites films
         viewModel.listOfFavorites.observe(viewLifecycleOwner) {
+            topFilmsAdapter.submitList(it)
+        }
+
+        //search bar
+        viewModel.searchFavoriteFilms.observe(viewLifecycleOwner) {
             topFilmsAdapter.submitList(it)
         }
     }
@@ -82,6 +90,20 @@ class FavoriteFilmsFragment : Fragment() {
         topFilmsAdapter.onFilmItemLongClickListener = {
             viewModel.changeFavoriteState(it)
         }
+    }
+
+    private fun setupSearch() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(mask: String?): Boolean {
+                viewModel.searchFavoriteFilms(mask ?: "")
+                return false
+            }
+
+        })
     }
 
 

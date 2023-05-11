@@ -62,7 +62,7 @@ class FilmMapper {
         )
     }
 
-    fun mapFavoritesFilmToFilmsEntity(
+    fun mapFavoritesFilmDbToFilmsEntity(
         film: MutableList<FavoritesFilmDbModel>
     ): MutableList<TopFilmsEntity> {
 

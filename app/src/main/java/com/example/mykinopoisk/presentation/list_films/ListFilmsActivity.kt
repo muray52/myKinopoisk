@@ -3,6 +3,8 @@ package com.example.mykinopoisk.presentation.list_films
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.mykinopoisk.R
@@ -29,6 +31,12 @@ class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
         viewModel = ViewModelProvider(this)[ListFilmsViewModel::class.java]
         startPopularFragment()
         onClickButtonListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.search_menu, menu)
+        return true
     }
 
     private fun startPopularFragment() {

@@ -2,6 +2,7 @@ package com.example.mykinopoisk.presentation.list_films.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
 import androidx.recyclerview.widget.ListAdapter
 import com.example.mykinopoisk.databinding.TopFilmsItemBinding
 import com.example.mykinopoisk.databinding.TopFilmsItemFavoritesBinding

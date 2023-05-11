@@ -33,4 +33,7 @@ interface FilmsRepository {
 
     suspend fun signIn(login: LoginEntity): Boolean
 
+    suspend fun searchFilmsPopular(mask: String): MutableList<TopFilmsEntity>
+
+    suspend fun searchFilmsFavorites(mask: String): MutableList<TopFilmsEntity>
 }

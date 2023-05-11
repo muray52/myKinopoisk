@@ -1,12 +1,12 @@
 package com.example.mykinopoisk.presentation.list_films
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.mykinopoisk.data.repository.FilmsRepositoryImpl
 import com.example.mykinopoisk.domain.model.TopFilmsEntity
 import com.example.mykinopoisk.domain.usecases.AddOrRemoveFavoriteFilmsUseCase
 import com.example.mykinopoisk.domain.usecases.GetTopFilmsUseCase
+import com.example.mykinopoisk.domain.usecases.SearchFilmsUseCase
 import kotlinx.coroutines.launch
 
 class ListFilmsViewModel(application: Application) : AndroidViewModel(application) {
@@ -14,14 +14,22 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     private val repository = FilmsRepositoryImpl(application)
     private val getTopFilmsUseCase = GetTopFilmsUseCase(repository)
     private val addOrRemoveFavoriteFilmsUseCase = AddOrRemoveFavoriteFilmsUseCase(repository)
+    private val searchFilmsUseCase = SearchFilmsUseCase(repository)
 
     private var page = 1
 
     private val _isRefreshing = MutableLiveData<Boolean>()
     val isRefreshing: LiveData<Boolean>
         get() = _isRefreshing
-    val listTopFilmsItems = getTopFilmsUseCase.getTopFilms()
+    var listTopFilms = getTopFilmsUseCase.getTopFilms()
     val listOfFavorites = getTopFilmsUseCase.loadFilmFavorites()
+    private val _searchTopFilms = MutableLiveData<MutableList<TopFilmsEntity>>()
+    val searchTopFilms: LiveData<MutableList<TopFilmsEntity>>
+        get() = _searchTopFilms
+
+    private val _searchFavoriteFilms = MutableLiveData<MutableList<TopFilmsEntity>>()
+    val searchFavoriteFilms: LiveData<MutableList<TopFilmsEntity>>
+        get() = _searchFavoriteFilms
 
     private val _errorResponseMessage = MutableLiveData<String>()
     val errorResponseMessage: LiveData<String>
@@ -32,14 +40,11 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun loadFilms() {
+        _isRefreshing.value = true
         viewModelScope.launch {
             try {
                 getTopFilmsUseCase.loadFilmsList(page)
                 page++
-                Log.d(
-                    "TOP_FILM",
-                    "Data loaded. Page = $page, size = ${listTopFilmsItems.value?.size}"
-                )
             } catch (exception: Exception) {
                 _errorResponseMessage.postValue(exception.message)
             }
@@ -49,7 +54,6 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun refreshFilms() {
         page = 1
-        _isRefreshing.value = true
         deleteFilmsList()
         loadFilms()
     }
@@ -77,6 +81,22 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
             } else {
                 addOrRemoveFavoriteFilmsUseCase.removeFilmFromFavorite(newItem.filmId)
             }
+        }
+    }
+
+    fun searchTopFilms(mask:String){
+        _isRefreshing.value = true
+        viewModelScope.launch {
+            _searchTopFilms.value = searchFilmsUseCase.searchFilmsPopular(mask)
+            _isRefreshing.value = false
+        }
+    }
+
+    fun searchFavoriteFilms(mask:String){
+        _isRefreshing.value = true
+        viewModelScope.launch {
+            _searchFavoriteFilms.value = searchFilmsUseCase.searchFilmsFavorites(mask)
+            _isRefreshing.value = false
         }
     }
 }
