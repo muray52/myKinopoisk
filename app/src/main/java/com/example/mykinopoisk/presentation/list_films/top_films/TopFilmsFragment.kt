@@ -74,7 +74,6 @@ class TopFilmsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         with(binding.rvFilms) {
-            itemAnimator = null
             adapter = topFilmsAdapter
             layoutManager = layoutManagerRv
         }

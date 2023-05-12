@@ -24,11 +24,11 @@
         <activity
             android:name=".presentation.list_films.ListFilmsActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".presentation.detailedinfo.DetailedInfoActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

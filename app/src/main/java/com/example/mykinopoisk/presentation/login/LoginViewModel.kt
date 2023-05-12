@@ -58,7 +58,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun setLoginStatus(isSuccessLogin: Boolean, errorMessage: String?) {
         _successLogin.postValue(isSuccessLogin)
-        _errorResponseMessage.postValue(errorMessage ?: "")
+        if (!isSuccessLogin) {
+            _errorResponseMessage.postValue(errorMessage ?: "")
+        }
     }
 
 }
