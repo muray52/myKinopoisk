@@ -8,10 +8,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mykinopoisk.databinding.FragmentPopularBinding
+import com.example.mykinopoisk.databinding.FragmentFavoritesBinding
+import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
 import com.example.mykinopoisk.presentation.list_films.ListFilmsViewModel
 import com.example.mykinopoisk.presentation.list_films.adapter.TopFilmsAdapter
-import com.example.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
 
 class FavoriteFilmsFragment : Fragment() {
 
@@ -20,9 +20,9 @@ class FavoriteFilmsFragment : Fragment() {
     private val viewModel: ListFilmsViewModel by activityViewModels()
     private val layoutManagerRv = LinearLayoutManager(context)
 
-    private var _binding: FragmentPopularBinding? = null
-    private val binding: FragmentPopularBinding
-        get() = _binding ?: throw RuntimeException("FragmentDetailedInfoBinding is null")
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding: FragmentFavoritesBinding
+        get() = _binding ?: throw RuntimeException("FragmentFavoritesBinding is null")
 
 
     override fun onCreateView(
@@ -30,7 +30,7 @@ class FavoriteFilmsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPopularBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -93,7 +93,7 @@ class FavoriteFilmsFragment : Fragment() {
     }
 
     private fun setupSearch() {
-        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }

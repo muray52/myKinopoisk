@@ -6,13 +6,13 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_bar"
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search movie"
-        android:inputType="text"
+        android:layoutDirection="rtl"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        android:layout_marginTop="?attr/actionBarSize"
+        android:inputType="text"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/idSwipeRefreshLayout"

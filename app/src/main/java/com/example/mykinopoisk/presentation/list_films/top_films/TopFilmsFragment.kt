@@ -118,7 +118,7 @@ class TopFilmsFragment : Fragment() {
     }
 
     private fun setupSearch() {
-        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }

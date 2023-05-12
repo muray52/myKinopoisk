@@ -5,11 +5,19 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:inputType="text"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/idSwipeRefreshLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="?attr/actionBarSize">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_films"
