@@ -5,10 +5,12 @@ My app is created for movies fans. You can find TOP movies, add movies to your f
 Features:
 1. Sign in with your credentials or like a guest.
 2. Choose tab: popular movies or your favorites movies
-3. If you want to add movie to favorites use long click. Do you want to delete? The same long click.
-4. Click on movie for openning detailed description.
+3. You can search movie by name on both tabs. Let's try it!
+4. If you want to add movie to favorites use long click. Do you want to delete? The same long click.
+5. Click on movie for openning detailed description.
 
-![screenshot1](https://user-images.githubusercontent.com/5577221/235679897-4901b1f1-28fb-4f14-9027-0c927d4916de.jpg) ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)![screenshot3](https://user-images.githubusercontent.com/5577221/235681553-a0a8070d-8244-437e-8827-b3cbe726f4be.jpg)
+![screenshot1_1](https://github.com/muray52/myKinopoisk/assets/5577221/540999b2-2140-451c-8251-89733360b11b)
+ ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)![screenshot3](https://user-images.githubusercontent.com/5577221/235681553-a0a8070d-8244-437e-8827-b3cbe726f4be.jpg)
 
 
 
