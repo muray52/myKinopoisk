@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,6 +24,7 @@ class FavoriteFilmsFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding: FragmentFavoritesBinding
         get() = _binding ?: throw RuntimeException("FragmentFavoritesBinding is null")
+    private var toastMessage: Toast? = null
 
 
     override fun onCreateView(
@@ -54,10 +56,21 @@ class FavoriteFilmsFragment : Fragment() {
             topFilmsAdapter.submitList(it)
         }
 
+        //toast with errors
+        viewModel.errorResponseMessage.observe(viewLifecycleOwner) {
+            toastObserve(it)
+        }
+
         //search bar
         viewModel.searchFavoriteFilms.observe(viewLifecycleOwner) {
             topFilmsAdapter.submitList(it)
         }
+    }
+
+    private fun toastObserve(message: String) {
+        toastMessage?.cancel()
+        toastMessage = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        toastMessage?.show()
     }
 
     private fun setupRecyclerView() {

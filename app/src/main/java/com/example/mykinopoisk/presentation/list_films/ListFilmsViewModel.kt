@@ -61,9 +61,13 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
     fun refreshFavoritesFilms() {
         _isRefreshing.value = true
         viewModelScope.launch {
-            getTopFilmsUseCase.reloadFilmFavorites()
-            _isRefreshing.value = false
+            try {
+                getTopFilmsUseCase.reloadFilmFavorites()
+            } catch (exception: Exception) {
+                _errorResponseMessage.postValue(exception.message)
+            }
         }
+        _isRefreshing.value = false
     }
 
     private fun deleteFilmsList() {
@@ -84,7 +88,7 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun searchTopFilms(mask:String){
+    fun searchTopFilms(mask: String) {
         _isRefreshing.value = true
         viewModelScope.launch {
             _searchTopFilms.value = searchFilmsUseCase.searchFilmsPopular(mask)
@@ -92,7 +96,7 @@ class ListFilmsViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun searchFavoriteFilms(mask:String){
+    fun searchFavoriteFilms(mask: String) {
         _isRefreshing.value = true
         viewModelScope.launch {
             _searchFavoriteFilms.value = searchFilmsUseCase.searchFilmsFavorites(mask)
