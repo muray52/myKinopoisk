@@ -10,7 +10,9 @@ Features:
 5. Click on movie for openning detailed description.
 
 ![screenshot1_1](https://github.com/muray52/myKinopoisk/assets/5577221/94450e86-a2f7-4126-9bf9-7f07f45c0936)
- ![screenshot2](https://user-images.githubusercontent.com/5577221/235680220-d61189c6-c938-43c7-8b6a-6b9efe0f9f88.jpg)![screenshot3](https://user-images.githubusercontent.com/5577221/235681553-a0a8070d-8244-437e-8827-b3cbe726f4be.jpg)
+![screenshot2_1](https://github.com/muray52/myKinopoisk/assets/5577221/5c278173-9709-4fdc-9890-a72782b69682)
+![screenshot3_1](https://github.com/muray52/myKinopoisk/assets/5577221/105d302f-2c90-47a5-ad11-d2b81c0cfd4c)
+
 
 
 
