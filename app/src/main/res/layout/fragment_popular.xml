@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:layoutDirection="rtl"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:inputType="text"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/idSwipeRefreshLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_films"

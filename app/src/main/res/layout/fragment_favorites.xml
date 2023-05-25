@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layoutDirection="rtl"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:inputType="text"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
