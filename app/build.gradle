@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mykinopoisk'
+    namespace 'com.vostrikov.mykinopoisk'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.mykinopoisk"
+        applicationId "com.vostrikov.mykinopoisk"
         minSdk 26
         targetSdk 33
         versionCode 1
@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

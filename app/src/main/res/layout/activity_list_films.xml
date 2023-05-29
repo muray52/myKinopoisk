@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.list_films.ListFilmsActivity">
+    tools:context="com.vostrikov.mykinopoisk.presentation.list_films.ListFilmsActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/film_list_container"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_popular"/>
