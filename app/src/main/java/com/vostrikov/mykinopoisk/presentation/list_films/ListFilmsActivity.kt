@@ -7,13 +7,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.vostrikov.mykinopoisk.ApplicationMyKinopoisk
 import com.vostrikov.mykinopoisk.R
 import com.vostrikov.mykinopoisk.databinding.ActivityListFilmsBinding
+import com.vostrikov.mykinopoisk.presentation.ViewModelFactory
 import com.vostrikov.mykinopoisk.presentation.detailedinfo.DetailedInfoActivity
 import com.vostrikov.mykinopoisk.presentation.detailedinfo.DetailedInfoFragment
 import com.vostrikov.mykinopoisk.presentation.detailedinfo.DetailedInfoOpen
 import com.vostrikov.mykinopoisk.presentation.list_films.favorite_films.FavoriteFilmsFragment
 import com.vostrikov.mykinopoisk.presentation.list_films.top_films.TopFilmsFragment
+import javax.inject.Inject
 
 class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
 
@@ -23,12 +26,20 @@ class ListFilmsActivity : AppCompatActivity(), DetailedInfoOpen {
     private val binding: ActivityListFilmsBinding
         get() = _binding ?: throw RuntimeException("ActivityMainBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as ApplicationMyKinopoisk).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         _binding = ActivityListFilmsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[ListFilmsViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ListFilmsViewModel::class.java]
 
         if (savedInstanceState == null) {
             startPopularFragment()

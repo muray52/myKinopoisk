@@ -3,8 +3,9 @@ package com.vostrikov.mykinopoisk.data.sharedpreferences
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import javax.inject.Inject
 
-class SharedPref(
+class SharedPref @Inject constructor(
     application: Application
 ) {
 
@@ -39,6 +40,10 @@ class SharedPref(
 
         //token for kinopoisk API connection
         private const val SP_KEY_API_VALUE = "e30ffed0-76ab-4dd6-b41f-4c9da2b2735b"
+
+        fun createInstance(application: Application): SharedPref{
+            return SharedPref(application)
+        }
     }
 }
 

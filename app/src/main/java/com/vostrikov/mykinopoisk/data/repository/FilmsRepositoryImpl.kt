@@ -1,12 +1,11 @@
 package com.vostrikov.mykinopoisk.data.repository
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.vostrikov.mykinopoisk.data.api.ApiFactory
+import com.vostrikov.mykinopoisk.data.api.ApiService
 import com.vostrikov.mykinopoisk.data.api.model.FilmDescriptionApiModel
-import com.vostrikov.mykinopoisk.data.db.AppDatabase
+import com.vostrikov.mykinopoisk.data.db.FilmsDao
 import com.vostrikov.mykinopoisk.data.db.model.FavoritesFilmDbModel
 import com.vostrikov.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.vostrikov.mykinopoisk.data.mapper.FilmMapper
@@ -16,13 +15,14 @@ import com.vostrikov.mykinopoisk.domain.model.DetailedFilmEntity
 import com.vostrikov.mykinopoisk.domain.model.LoginEntity
 import com.vostrikov.mykinopoisk.domain.model.TopFilmsEntity
 import com.vostrikov.mykinopoisk.util.BaseRepo
+import javax.inject.Inject
 
-class FilmsRepositoryImpl(application: Application) : FilmsRepository, BaseRepo() {
-
-    private val apiService = ApiFactory.apiService
-    private val mapper = FilmMapper()
-    private val filmsDao = AppDatabase.getInstance(application).filmsDao()
-    private val sharedPref = SharedPref(application)
+class FilmsRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: FilmMapper,
+    private val filmsDao: FilmsDao,
+    private val sharedPref: SharedPref
+) : FilmsRepository, BaseRepo() {
 
     override suspend fun loadFilmsList(page: Int) {
         val response = safeApiCall {

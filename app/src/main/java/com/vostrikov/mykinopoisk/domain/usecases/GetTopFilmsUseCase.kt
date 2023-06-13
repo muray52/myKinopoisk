@@ -3,8 +3,11 @@ package com.vostrikov.mykinopoisk.domain.usecases
 import androidx.lifecycle.LiveData
 import com.vostrikov.mykinopoisk.domain.FilmsRepository
 import com.vostrikov.mykinopoisk.domain.model.TopFilmsEntity
+import javax.inject.Inject
 
-class GetTopFilmsUseCase(private val repository: FilmsRepository) {
+class GetTopFilmsUseCase @Inject constructor(
+    private val repository: FilmsRepository
+) {
 
     suspend fun loadFilmsList(page: Int) {
         repository.loadFilmsList(page)

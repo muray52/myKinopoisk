@@ -1,5 +1,6 @@
 package com.vostrikov.mykinopoisk.presentation.detailedinfo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.vostrikov.mykinopoisk.databinding.FragmentDetailedInfoBinding
 import com.squareup.picasso.Picasso
+import com.vostrikov.mykinopoisk.ApplicationMyKinopoisk
+import com.vostrikov.mykinopoisk.databinding.FragmentDetailedInfoBinding
+import com.vostrikov.mykinopoisk.presentation.ViewModelFactory
+import javax.inject.Inject
 
 class DetailedInfoFragment : Fragment() {
 
@@ -18,6 +22,18 @@ class DetailedInfoFragment : Fragment() {
     private val binding: FragmentDetailedInfoBinding
         get() = _binding ?: throw RuntimeException("FragmentDetailedInfoBinding is null")
     private var toastMessage: Toast? = null
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as ApplicationMyKinopoisk).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +51,7 @@ class DetailedInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[DetailedInfoViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[DetailedInfoViewModel::class.java]
         viewModel.getDetailedInfo(filmId)
         observeViewModel()
     }
@@ -49,12 +65,12 @@ class DetailedInfoFragment : Fragment() {
                 idFilmName.text = it.nameRu
                 Picasso.get()
                     .load(it.posterUrl)
-                    .resize(1000,0)
+                    .resize(1000, 0)
                     .into(binding.idFilmBigImage)
             }
         }
 
-        viewModel.errorResponseMessage.observe(viewLifecycleOwner){
+        viewModel.errorResponseMessage.observe(viewLifecycleOwner) {
             toastObserve(it)
         }
     }
@@ -68,7 +84,7 @@ class DetailedInfoFragment : Fragment() {
         filmId = args.getInt(FILM_ID, 0)
     }
 
-    private fun toastObserve(message: String){
+    private fun toastObserve(message: String) {
         toastMessage?.cancel()
         toastMessage = Toast.makeText(context, message, Toast.LENGTH_SHORT)
         toastMessage?.show()

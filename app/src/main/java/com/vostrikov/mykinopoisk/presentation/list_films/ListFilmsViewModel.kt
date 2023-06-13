@@ -1,20 +1,21 @@
 package com.vostrikov.mykinopoisk.presentation.list_films
 
-import android.app.Application
-import androidx.lifecycle.*
-import com.vostrikov.mykinopoisk.data.repository.FilmsRepositoryImpl
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.vostrikov.mykinopoisk.domain.model.TopFilmsEntity
 import com.vostrikov.mykinopoisk.domain.usecases.AddOrRemoveFavoriteFilmsUseCase
 import com.vostrikov.mykinopoisk.domain.usecases.GetTopFilmsUseCase
 import com.vostrikov.mykinopoisk.domain.usecases.SearchFilmsUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ListFilmsViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = FilmsRepositoryImpl(application)
-    private val getTopFilmsUseCase = GetTopFilmsUseCase(repository)
-    private val addOrRemoveFavoriteFilmsUseCase = AddOrRemoveFavoriteFilmsUseCase(repository)
-    private val searchFilmsUseCase = SearchFilmsUseCase(repository)
+class ListFilmsViewModel @Inject constructor(
+    private val getTopFilmsUseCase: GetTopFilmsUseCase,
+    private val addOrRemoveFavoriteFilmsUseCase: AddOrRemoveFavoriteFilmsUseCase,
+    private val searchFilmsUseCase: SearchFilmsUseCase
+) : ViewModel() {
 
     private var page = 1
 

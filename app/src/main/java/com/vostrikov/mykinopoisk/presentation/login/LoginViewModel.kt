@@ -1,20 +1,20 @@
 package com.vostrikov.mykinopoisk.presentation.login
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vostrikov.mykinopoisk.R
-import com.vostrikov.mykinopoisk.data.repository.FilmsRepositoryImpl
 import com.vostrikov.mykinopoisk.domain.model.LoginEntity
 import com.vostrikov.mykinopoisk.domain.usecases.SignInUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = FilmsRepositoryImpl(application)
-    private val signInUseCase = SignInUseCase(repository)
+class LoginViewModel @Inject constructor(
+    private val application: Application,
+    private val signInUseCase: SignInUseCase
+) : ViewModel() {
 
     private val _successLogin = MutableLiveData<Boolean>()
     val successLogin: LiveData<Boolean>
@@ -31,7 +31,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 setLoginStatus(
                     false,
-                    getApplication<Application>().getString(R.string.toast_guest_error)
+                    application.getString(R.string.toast_guest_error)
                 )
             }
         } catch (exception: Exception) {
@@ -47,7 +47,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 } else {
                     setLoginStatus(
                         false,
-                        getApplication<Application>().getString(R.string.toast_user_error)
+                        application.getString(R.string.toast_user_error)
                     )
                 }
             } catch (exception: Exception) {

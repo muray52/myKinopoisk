@@ -1,16 +1,17 @@
 package com.vostrikov.mykinopoisk.presentation.detailedinfo
 
-import android.app.Application
-import androidx.lifecycle.*
-import com.vostrikov.mykinopoisk.data.repository.FilmsRepositoryImpl
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.vostrikov.mykinopoisk.domain.model.DetailedFilmEntity
 import com.vostrikov.mykinopoisk.domain.usecases.GetDetailedFilmInfoUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailedInfoViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = FilmsRepositoryImpl(application)
-    private val getDetailedFilmInfoUseCase = GetDetailedFilmInfoUseCase(repository)
+class DetailedInfoViewModel @Inject constructor(
+    private val getDetailedFilmInfoUseCase: GetDetailedFilmInfoUseCase
+) : ViewModel() {
 
     private val _detailedInfo = MutableLiveData<DetailedFilmEntity>()
     val detailedInfo: LiveData<DetailedFilmEntity>

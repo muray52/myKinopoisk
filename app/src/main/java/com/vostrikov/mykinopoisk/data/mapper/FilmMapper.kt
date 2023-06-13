@@ -6,8 +6,9 @@ import com.vostrikov.mykinopoisk.data.db.model.TopFilmsDbModel
 import com.vostrikov.mykinopoisk.domain.model.DetailedFilmEntity
 import com.vostrikov.mykinopoisk.domain.model.LoginEntity
 import com.vostrikov.mykinopoisk.domain.model.TopFilmsEntity
+import javax.inject.Inject
 
-class FilmMapper {
+class FilmMapper @Inject constructor() {
 
     fun mapFilmPagesToTopFilmsDbModel(filmPages: TopFilmsPagesApiModel): MutableList<TopFilmsDbModel> {
         val topFilmsEntity: MutableList<TopFilmsDbModel> = mutableListOf()
@@ -97,7 +98,7 @@ class FilmMapper {
                     it.kinopoiskId ?: 0,
                     it.nameRu,
                     it.year.toString(),
-                    createGenreAndYear(it.genres,it.year.toString()),
+                    createGenreAndYear(it.genres, it.year.toString()),
                     it.posterUrlPreview
                 )
             )
@@ -138,7 +139,7 @@ class FilmMapper {
                     it.filmId,
                     it.nameRu,
                     it.year,
-                    createGenreAndYear(it.genres, it.year?:""),
+                    createGenreAndYear(it.genres, it.year ?: ""),
                     it.posterUrlPreview,
                     it.favoritesFlag
                 )
